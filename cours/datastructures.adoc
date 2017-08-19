@@ -1,0 +1,218 @@
+= Structures de données en Java
+
+:imagesdir: ./images/datastructures
+
+== Structure de données
+
+[quote, Wikipedia, https://en.wikipedia.org/wiki/Data_structure]
+A data structure is a particular way of organizing data in a computer so that it can be used efficiently
+
+=== Quelques structures de données Java
+
+* Tableau
+* Liste
+* Set
+* Dictionnaire
+
+== Tableau
+
+* Taille fixe
+* Eléments stockés de manière continue en mémoire
+
+=== !
+
+[source,java]
+----
+int[] a0;
+int[] a1 = new int[2];
+int[] a2 = { 1, 2, 3 };
+int a3[] = { 1, 2, 3 };
+Object[] a4 = { new Object(), Boolean.TRUE, 1 };
+int[][] a5 = new int[3][3];
+----
+
+=== Accès
+
+* Accès à un élément par son index
+** Opérateur `[]`
+** `ArrayIndexOutOfBoundsException` si l'index n'existe pas
+* Accès à la taille 
+** Attribut `length`
+
+=== !
+
+[source,java]
+----
+int[] a = { 1, 2, 3 };
+int first = a[0];
+int size = a.length;
+
+int[] b = new int[3];
+b[0] = 1;
+b[2] = 3;
+----
+
+=== java.util.Arrays
+
+* Recherche d'élément
+* Test d'égalité
+* Tri
+* Remplissage
+* Copie
+* etc.
+
+== Liste
+
+Collection +++<u>ordonnée</u>+++ d'éléments
+
+=== !
+
+[.stretch]
+image::list.svg[]
+
+== Iterator
+
+* Permet le parcours séquentiel des éléments d'une collection
+* Concept similaire à celui de curseur
+
+=== !
+
+[source,java]
+----
+List list = Arrays.asList("apple", "orange", "pear");
+Iterator iterator = list.iterator();
+while (iterator.hasNext()) {
+    Object o = iterator.next();
+    String s = (String) o;
+    // Do something with s
+}
+----
+
+=== For-each
+
+* Pour les classes qui implémentent `Iterable`
+
+[source,java]
+----
+List list = Arrays.asList("apple", "orange", "pear");
+for (Object o : list) {
+    String s = (String) o;
+    // Do something with s
+}
+----
+
+== Tri
+
+[quote, Wikipedia, https://en.wikipedia.org/wiki/Sorting_algorithm]
+A sorting algorithm is an algorithm that puts elements of a list in a certain order.
+
+=== Ordre
+
+* Ordre "naturel" des éléments
+* Ordre explicite
+
+=== !
+
+image::ordering.svg[]
+
+=== Quel algorithme de tri ?
+
+* Dépend du JRE
+* https://en.wikipedia.org/wiki/Timsort[Tim Sort^]
+
+=== Complexité algorithmique
+
+[quote, Wikipedia, http://bit.ly/2wdY0fF]
+La théorie de la complexité est un domaine des mathématiques qui étudie formellement la quantité de ressources (temps et/ou espace mémoire) nécessaire pour résoudre un problème algorithmique au moyen de l'exécution d'un algorithme.
+
+=== !
+
+[.stretch]
+image::sort-complexity.png[Complexité algorithmique des algorithmes de tri,1128,760]
+<http://bigocheatsheet.com/#sorting>
+
+=== Comparable
+
+Compare l'objet courant `this` avec un autre objet `that` et retourne :
+
+* Un entier négatif si `this < that` 
+* Un entier positif si `this > that` 
+* `0` si `this = that`
+
+=== Classes comparables
+
+* `String`
+* `Number` (`Integer`, `Float`, etc.)
+* `Date`
+* `File`
+* etc.
+
+=== Comparateur
+
+Compare deux arguments `x` et `y` et retourne :
+
+* Un entier négatif si `x < y` 
+* Un entier positif si `x > y` 
+* `0` si `x = y`
+
+=== Comparateur d'entiers
+
+[source, java]
+----
+public class IntegerComparator implements Comparator {
+
+  @Override
+  public int compare(Object x, Object y) {
+    if (!(x instanceof Integer)) {
+      throw new IllegalArgumentException("x must be an int");
+    }
+    if (!(y instanceof Integer)) {
+      throw new IllegalArgumentException("y must be an int");
+    }
+    int xInt = (Integer) x;
+    int yInt = (Integer) y;
+    return xInt - yInt;
+  }
+}
+----
+
+== Implémentations de List
+
+[.stretch]
+image::arraylinkedlist.svg[]
+
+=== Implémentations de List
+
+ArrayList:: Basée sur un tableau
+LinkedList:: Basée sur des noeuds liés parcourables dans les deux sens 
+
+=== Liste doublement chaînée
+
+image::linked-list.jpg["Liste doublement chaînée", 900]
+
+=== Ajout d'un élément en fin de liste
+
+image::linked-list-add-end.jpg["Ajout d'un élément en fin de liste", 900]
+
+=== Ajout d'élément
+
+image::linked-list-add-anywhere.jpg["Ajout d'élément", 900]
+
+=== !
+
+[.stretch]
+image::data-structure-complexity.png[Complexité algorithmique des opérations sur les structures de données,1054,862]
+<http://bigocheatsheet.com/#data-structures>
+
+=== Liste basée sur un tableau
+
+image::array-list.png["Liste basée sur un tableau", 900]
+
+=== Ajout d'un élément en fin de liste
+
+image::array-list-add-end.png["Ajout d'un élément en fin de liste", 900]
+
+=== Ajout d'élément
+
+image::array-list-add-anywhere.jpg["Ajout d'élément", 900]
+

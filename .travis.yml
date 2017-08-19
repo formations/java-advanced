@@ -1,0 +1,20 @@
+language: ruby
+
+before_install: mkdir -p output/cours output/tp
+
+install:
+  - bundle config --local github.https true
+  - bundle --path=.bundle/gems --binstubs=.bundle/.bin
+
+script:
+  - bundle exec asciidoctor-revealjs -D output/cours -a revealjs_history=true -a revealjs_theme=white -a revealjs_slideNumber=true -a linkcss -a customcss=../style.css -a revealjsdir=https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0 cours/*.adoc
+  - bundle exec asciidoctor -D output README.adoc
+  - bundle exec asciidoctor -D output/tp tp/*.adoc
+
+after_success:      
+  - cd output ; mv README.html index.html ; cp -R ../cours/images cours ; cp -R ../tp/images tp ; cp ../style.css .
+  - git init
+  - git config user.name "${GH_USER_NAME}"
+  - git config user.email "{GH_USER_EMAIL}"
+  - git add . ; git commit -m "Deploy to GitHub Pages"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1

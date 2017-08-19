@@ -1,0 +1,101 @@
+= Travaux pratiques - Structures de données
+Nicolas Frankel
+:doctype: article
+:encoding: utf-8
+:lang: fr
+:toc:
+:toc-title: Table des matières
+:toc-placement!:
+:sectanchors:
+:numbered:
+:experimental:
+:icons: font
+:imagesdir: ./images/datastructures
+:toc:
+
+include::../license.adoc[]
+
+toc::[]
+
+== Références
+
+En anglais : ::
+
+* https://docs.oracle.com/javase/8/docs/api/index.html?java/util/List.html[API^]
+* http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html[Collections Framework Overview^]
+* http://docs.oracle.com/javase/tutorial/collections/index.html[The Java™ Tutorials: Trail: Collections^]
+* http://bigocheatsheet.com/[Know Thy Complexities!^]
+
+En français : ::
+* https://www.jmdoudoux.fr/java/dej/chap-collections.htm[Les Collections^]
+
+== Mise en place
+
+Se référer au paragraphe https://formations.github.io/javaee/tp/servlet.html#_mise_en_place[Mise en place^] du cours Java EE.
+
+== Manipulation de tableaux
+
+Implémenter une méthode qui accepte deux paramètres `m` et `n` de type `int` et qui crée une matrice de dimensions `m` x `n`.
+La valeur de la cellule de coordonnées `[i][j]` est `i + j`.
+
+Par exmple, voici le tableau résultat de la méthode avec les paramètres `4` et `3` :
+
+[options="header"]
+|===
+|         | i = 0 | i = 1 | i = 2 | i = 3
+ h| j = 0 | 0     | 1     | 2     | 3
+ h| j = 1 | 1     | 2     | 3     | 4
+ h| j = 2 | 2     | 3     | 4     | 5
+|===
+
+== Manipulation de listes
+
+Voici un échantillon de code qui sera utilisé dans les exercices de cette section :
+
+[source,java]
+----
+List list = Arrays.asList(2, 1, "banana", null, "apple", "orange",
+                          3, new Object(), new java.util.Date());
+----
+
+=== Tri
+
+==== Comparateurs
+
+Trier la liste ci-dessus avec un comparateur explicite en utilisant l'ordre suivant :
+
+. Les entiers, puis dans l'ordre naturel des entiers,
+. Les chaînes de caractères, puis dans l'ordre naturel des chaînes de caractères,
+. Les éléments qui *ne sont pas* de type `Object`,
+. Les éléments de type `Object`,
+. Enfin, les valeurs `null`.
+
+Le résultat doit être le suivant :
+
+`[1, 2, 3, "apple", "banana", "orange", Tue Aug 22 15:18:21 CEST 2017, java.lang.Object@cafebabe, null]`.
+
+==== Ordre naturel
+
+Exercice 1:: Trier la liste ci-dessus dans l'ordre naturel des éléments.
++
+Expliquer la raison de l'exception.
++
+Exercice 2:: Implémenter une méthode qui accepte en répertoire en paramètre et retourne la liste triée des enfants de ce répertoire.
++
+Appeler la méthode en passant un répertoire avec un nombre conséquent d'enfants. A l'aide la JavaDoc, expliquer l'ordre utilisé.
+
+=== Itération
+
+En utilisant un `Iterator`, implémenter une méthode qui, à partir de la liste ci-dessus, crée 3 listes distinctes en fonction du type de chaque élément :
+
+. La première liste comprend les chaînes de caractères,
+. La deuxième liste les éléments de type `Integer`,
+. La troisième tous les autres.
+
+TIP: L'itérateur peut être soit explicitement déclaré, soit être utilisé implicitement.
+
+Le résultat doit être le suivant :
+
+`[["banana", "apple", "orange"], [2, 1, 3], [null, java.lang.Object@cafebabe, Tue Aug 22 15:18:21 CEST 2017]]`
+
+
