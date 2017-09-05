@@ -367,4 +367,25 @@ Set set = new HashSet(coll);
 System.out.println(set.size());
 ----
 
+== Dictionnaire
 
+[quote, https://fr.wikipedia.org/wiki/Tableau_associatif]
+Un dictionnaire est une structure de données associant à un ensemble de clefs un ensemble correspondant de valeurs. Chaque clef est associée à une valeur.
+
+=== !
+
+image::map.png[]
+
+=== !
+
+[.stretch]
+image::map.svg[]
+
+=== Hash Map
+
+[.stretch]
+image::hashmap-internal.png[]
+
+// https://javahungry.blogspot.com/2013/08/hashing-how-hash-map-works-in-java-or.html
+
+Capacité initiale & facteur de chargement
