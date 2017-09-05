@@ -216,3 +216,155 @@ image::array-list-add-end.png["Ajout d'un élément en fin de liste", 900]
 
 image::array-list-add-anywhere.jpg["Ajout d'élément", 900]
 
+== Set
+
+Collection +++<u>dé-doublonnée</u>+++ d'éléments
+
+=== !
+
+[.stretch]
+image::set.svg[]
+
+=== Exemple
+
+[source, java]
+----
+Collection collection = Arrays.asList("One", "One", "Two");
+Set set = new HashSet(collection);
+System.out.println(set.size());
+----
+
+=== Un autre exemple
+
+[source, java]
+----
+public class Wrapper {
+
+    private final int id;
+
+    public Wrapper(int id) {
+        this.id = id;
+    }
+}
+
+Collection collection = Arrays.asList(new Wrapper(1),
+                                      new Wrapper(1),
+                                      new Wrapper(2));
+Set set = new HashSet(collection);
+System.out.println(set.size());
+----
+
+=== Définition de doublon
+
+Deux objets `a` et `b` sont considérés des doublons si `a.equals(b)`
+
+=== Méthode https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals(java.lang.Object)[equals^]
+
+[cols="1,4"]
+|===
+
+| Reflexive     a| ∀ x != null, +
+                   `x.equals(x) == true`
+| Symmetric     a| ∀ x, y != null, +
+                   `x.equals(y) == true ⇔ y.equals(x) == true`
+
+|===
+
+=== !
+
+[cols="1,4"]
+|===
+
+| Transitive    a| ∀ x, y, z != null, +
+                   `x.equals(y) == true AND y.equals(z) == true ⇒ x.equals(z) == true`
+| Consistent     |
+| Null          a| ∀ x != null, +
+                   `x.equals(null) == false`
+
+|===
+
+=== Application
+
+[source,java]
+----
+Object a = new Object();
+Object b = new Object();
+System.out.println(a == a);
+System.out.println(a == b);
+System.out.println(a.equals(a));
+System.out.println(a.equals(b));
+----
+
+=== Cas particulier des String
+
+[source,java]
+----
+String one1 = "One";
+String one2 = "One";
+String two = "Two";
+System.out.println(one1 == one1);
+System.out.println(one1 == one2);
+System.out.println(one1 == two);
+System.out.println(one1.equals(one1));
+System.out.println(one1.equals(one2));
+System.out.println(one1.equals(two));
+----
+
+=== Implémentation d'equals()
+
+[source,java]
+----
+public class Wrapper { // Attribute & constructor
+
+ @Override
+ public boolean equals(Object o) {
+  return o instanceof Wrapper && this.id == ((Wrapper) o).id;
+ }
+}
+
+Wrapper w1 = new Wrapper(1);
+Wrapper w11 = new Wrapper(1);
+Wrapper w2 = new Wrapper(2);
+System.out.println(w1.equals(w1));
+System.out.println(w1.equals(w11));
+System.out.println(w1.equals(w2));
+----
+
+=== Et avec le set ?
+
+[source, java]
+----
+Collection collection = Arrays.asList(new Wrapper(1),
+                                      new Wrapper(1),
+                                      new Wrapper(2));
+Set set = new HashSet(collection);
+System.out.println(set.size());
+----
+
+=== Méthode https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#hashCode()[hashCode()^]
+
+* Consistent (_during the same run of the JVM_)
+* `a.equals(b)` ⇒ +
+  `a.hashCode() == b.hashCode()`
+
+=== Implémentation d'hashCode()
+
+[source,java]
+----
+public class Wrapper { // Attribute & constructor
+
+ @Override public int hashCode() { return this.id; }
+
+ @Override
+ public boolean equals(Object o) {
+  return o instanceof Wrapper && this.id == ((Wrapper) o).id;
+ }
+}
+
+Collection coll = Arrays.asList(
+    new Wrapper(1), new Wrapper(1), new Wrapper(2));
+Set set = new HashSet(coll);
+System.out.println(set.size());
+----
+
+
