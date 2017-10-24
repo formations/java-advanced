@@ -101,6 +101,51 @@ for (Object o : list) {
 }
 ----
 
+== Implémentations de List
+
+[.stretch]
+image::arraylinkedlist.svg[]
+
+=== Implémentations de List
+
+ArrayList:: Basée sur un tableau
+LinkedList:: Basée sur des noeuds liés parcourables dans les deux sens 
+
+=== Liste doublement chaînée
+
+image::linked-list.jpg["Liste doublement chaînée", 900]
+
+=== Ajout d'un élément en fin de liste
+
+image::linked-list-add-end.jpg["Ajout d'un élément en fin de liste", 900]
+
+=== Ajout d'élément
+
+image::linked-list-add-anywhere.jpg["Ajout d'élément", 900]
+
+=== Complexité algorithmique
+
+[quote, Wikipedia, http://bit.ly/2wdY0fF]
+La théorie de la complexité est un domaine des mathématiques qui étudie formellement la quantité de ressources (temps et/ou espace mémoire) nécessaire pour résoudre un problème algorithmique au moyen de l'exécution d'un algorithme.
+
+=== !
+
+[.stretch]
+image::data-structure-complexity.png[Complexité algorithmique des opérations sur les structures de données,1054,862]
+<http://bigocheatsheet.com/#data-structures>
+
+=== Liste basée sur un tableau
+
+image::array-list.png["Liste basée sur un tableau", 900]
+
+=== Ajout d'un élément en fin de liste
+
+image::array-list-add-end.png["Ajout d'un élément en fin de liste", 900]
+
+=== Ajout d'élément
+
+image::array-list-add-anywhere.jpg["Ajout d'élément", 900]
+
 == Tri
 
 [quote, Wikipedia, https://en.wikipedia.org/wiki/Sorting_algorithm]
@@ -119,11 +164,6 @@ image::ordering.svg[]
 
 * Dépend du JRE
 * https://en.wikipedia.org/wiki/Timsort[Tim Sort^]
-
-=== Complexité algorithmique
-
-[quote, Wikipedia, http://bit.ly/2wdY0fF]
-La théorie de la complexité est un domaine des mathématiques qui étudie formellement la quantité de ressources (temps et/ou espace mémoire) nécessaire pour résoudre un problème algorithmique au moyen de l'exécution d'un algorithme.
 
 === !
 
@@ -175,46 +215,6 @@ public class IntegerComparator implements Comparator {
   }
 }
 ----
-
-== Implémentations de List
-
-[.stretch]
-image::arraylinkedlist.svg[]
-
-=== Implémentations de List
-
-ArrayList:: Basée sur un tableau
-LinkedList:: Basée sur des noeuds liés parcourables dans les deux sens 
-
-=== Liste doublement chaînée
-
-image::linked-list.jpg["Liste doublement chaînée", 900]
-
-=== Ajout d'un élément en fin de liste
-
-image::linked-list-add-end.jpg["Ajout d'un élément en fin de liste", 900]
-
-=== Ajout d'élément
-
-image::linked-list-add-anywhere.jpg["Ajout d'élément", 900]
-
-=== !
-
-[.stretch]
-image::data-structure-complexity.png[Complexité algorithmique des opérations sur les structures de données,1054,862]
-<http://bigocheatsheet.com/#data-structures>
-
-=== Liste basée sur un tableau
-
-image::array-list.png["Liste basée sur un tableau", 900]
-
-=== Ajout d'un élément en fin de liste
-
-image::array-list-add-end.png["Ajout d'un élément en fin de liste", 900]
-
-=== Ajout d'élément
-
-image::array-list-add-anywhere.jpg["Ajout d'élément", 900]
 
 == Set
 
