@@ -51,7 +51,33 @@ Par exmple, voici le tableau résultat de la méthode avec les paramètres `4` e
 
 == Manipulation de listes
 
-Voici un échantillon de code qui sera utilisé dans les exercices de cette section :
+=== Itération
+
+==== Somme
+
+Soit une liste d'entiers.
+Implémenter une méthode `sum()` qui retourne la somme des éléments de la liste.
+
+==== Groupement
+
+Implémenter une méthode `group()` qui retourne les éléments d'une liste groupés par type.
+Le groupement se fait selon les règles suivantes :
+
+. Le premier groupe comprend les chaînes de caractères,
+. Le deuxième groupe les éléments de type `Integer`,
+. La troisième tous les autres.
+
+Chaque groupe est géré par un type `Collection`.
+
+Par exemple, avec la liste de la section suivante, le résultat doit être une `Collection` qui comprend :
+
+. `["banana", "apple", "orange"]`
+. `[2, 1, 3]`
+. `[null, java.lang.Object@cafebabe, Tue Aug 22 15:18:21 CEST 2017]]`
+
+=== Comparateurs
+
+Voici un échantillon de code qui pourra être utilisé comme test dans les exercices de cette section :
 
 [source,java]
 ----
@@ -59,9 +85,9 @@ List list = Arrays.asList(2, 1, "banana", null, "apple", "orange",
                           3, new Object(), new java.util.Date());
 ----
 
-=== Tri avec un comparateur
+==== Tri avec un comparateur
 
-Trier la liste ci-dessus avec un comparateur explicite en utilisant l'ordre suivant :
+Implémenter une méthode `sortWithSetComparator()` qui trie une liste avec un comparateur explicite en utilisant l'ordre suivant :
 
 . Les entiers, puis dans l'ordre naturel des entiers,
 . Les chaînes de caractères, puis dans l'ordre naturel des chaînes de caractères,
@@ -69,11 +95,11 @@ Trier la liste ci-dessus avec un comparateur explicite en utilisant l'ordre suiv
 . Les éléments de type `Object`,
 . Enfin, les valeurs `null`.
 
-Le résultat doit être le suivant :
+Avec la liste échantillon, le résultat doit être le suivant :
 
 `[1, 2, 3, "apple", "banana", "orange", Tue Aug 22 15:18:21 CEST 2017, java.lang.Object@cafebabe, null]`.
 
-=== Chaînage de comparateurs
+==== Chaînage de comparateurs
 
 Soit le code suivant :
 
@@ -99,31 +125,22 @@ En réutilisant les classes existantes, créer une implémentation de comparateu
 1. Par leur attribut `lastName`,
 2. Puis en cas d'égalité par leur attribut `firstName`.
 
-=== Tri par ordre naturel
+==== Tri par ordre naturel
 
-Exercice 1:: Trier la liste ci-dessus dans l'ordre naturel des éléments.
-+
-Expliquer la raison de l'exception.
-+
-Exercice 2:: Implémenter une méthode qui accepte en paramètre le chemin vers un répertoire et retourne la liste triée des enfants de ce répertoire.
-+
-Appeler la méthode en passant un répertoire avec un nombre conséquent d'enfants.
-Constater l'orde utilisé.
-Chercher la confirmation à l'aide de la JavaDoc.
+Implémenter une méthode `sortWithNaturalOrder()` qui trie la liste passée en paramètre dans l'ordre naturel des éléments.
+Tester avec la liste échantillon.
 
-=== Itération
+. Quel est le résultat obtenu ?
+. Expliquer la raison.
+. Proposer une solution pour corriger le problème.
 
-En utilisant un `Iterator`, implémenter une méthode qui, à partir de la liste ci-dessus, crée 3 listes distinctes en fonction du type de chaque élément :
+=== Tri par ordre naturel - système de fichiers
 
-. La première liste comprend les chaînes de caractères,
-. La deuxième liste les éléments de type `Integer`,
-. La troisième tous les autres.
+Implémenter une méthode `listDirectory()` qui accepte en paramètre le chemin vers un répertoire et retourne la liste triée des enfants de ce répertoire.
 
-TIP: L'itérateur peut être soit explicitement déclaré, soit être utilisé implicitement.
-
-Le résultat doit être le suivant :
-
-`[["banana", "apple", "orange"], [2, 1, 3], [null, java.lang.Object@cafebabe, Tue Aug 22 15:18:21 CEST 2017]]`
+. Appeler la méthode en passant un répertoire avec un nombre conséquent d'enfants.
+. Constater l'orde utilisé.
+. Chercher la confirmation à l'aide de la JavaDoc.
 
 == Manipulation de sets
 
