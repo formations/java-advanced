@@ -1,0 +1,231 @@
+= Génériques
+
+:imagesdir: ./images/generics
+
+== Transtypage
+
+[source,java]
+----
+List strings = Arrays.asList("One", "Two", "Three");
+Object stringObject = strings.get(0);
+String string = (String) stringObject;
+
+List ints = Arrays.asList(1, 2, 3);
+Object intObject = ints.get(0);
+int number = (int) intObject;
+----
+
+=== Problème
+
+* Le transtypage rapproche un langage typé statiquement d'un language typé dynamiquement
+* Comment améliorer la vérification de type à la compilation ?
+
+=== Types génériques
+
+* Depuis Java 5
+* Implémentation des classes template en UML
+* Contraint le type des variables
+
+=== Utilisation de génériques
+
+* Contrainte de type indiquée entre chevrons après la classe
+** Obligatoire pour la déclaration
+** Optionnel pour l'instanciation (Java 7)
+
+=== !
+
+[source,java]
+----
+// Avant Java 7
+List<String> strings = new ArrayList<String>();
+
+// Depuis Java 7
+List<String> strings = new ArrayList<>();
+----
+
+=== Code re-travaillé
+
+[source,java]
+----
+List<String> strings = Arrays.asList("One", "Two", "Three");
+String string = strings.get(0);
+
+List<Integer> ints = Arrays.asList(1, 2, 3);
+int number = ints.get(0);
+----
+
+=== Type erasure
+
+* Vérification à la compilation
+* Aucune différence dans le _bytecode_
+
+=== !
+
+[source,java]
+----
+interface Foo {
+    void bar(List<String> strings);
+    void bar(List<Integer> integers); // compilation error
+}
+----
+
+== Problème de variance
+
+[source,java]
+----
+Integer[] integers = { 1, 2, 3, 4 };
+Number[] numbers = integers;
+numbers[0] = 3.14; // ArrayStoreException
+----
+
+=== Solution avec les génériques
+
+[source,java]
+----
+List<Integer> integers = Arrays.asList(0, 1, 2, 4);
+List<Number> numbers = integers; //compiler error
+----
+
+=== Co-variance
+
+* Utilisation d'un type et de ses _sous-types_
+* Permet de lire
+* Mais *pas d'écrire !*
+
+=== Caractère joker
+
+`?` indique un caractère joker
+
+[options="header"]
+|===
+
+| Sous-type de ... | Notation
+
+| `T`              | `<? extends T>`
+| `Object`         | `<?>`
+
+|===
+
+=== !
+
+[source,java]
+----
+List<Integer> integers = Arrays.asList(0, 1, 2, 4);
+List<? extends Number> numbers = integers;
+int zero = integers.get(0);
+Number one = numbers.get(1);
+integers.add(5);
+numbers.add(6); // compiler error
+----
+
+=== Contra-variance
+
+* Utilisation d'un type et de ses _super-types_
+* Permet d'écrire
+* Mais *pas de lire !*
+
+=== !
+
+[source,java]
+----
+List<Number> numbers = Arrays.asList(0, 1, 2, 4);
+List<? super Integer> integers = numbers;
+integers.add(5);
+numbers.add(6);
+Number one = numbers.get(1);
+integers.get(0); // Type Object
+----
+
+== Méthode générique
+
+[source,java]
+----
+public class Pair<K, V> {
+
+    private final K key;
+    private final V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+----
+
+=== !
+
+[source,java]
+----
+public class Pair<K, V> {
+
+    private final K key;
+    private final V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey()   { return key; }
+    public V getValue() { return value; }
+}
+----
+
+== Contrainte de type de paramètre
+
+* Contrainte sur un type dans la signature d'une méthode
+* Sans que la classe soit générique
+* Via un paramètre supplémentaire dans la signature
+
+=== Exemple de contrainte simple
+
+[source,java]
+----
+public class Foo {
+    static <T> T id(T t) {
+        return t;
+    }
+
+    public static void main(String... args) {
+        Foo foo = new Foo();
+        String string = Foo.id("Hello");
+    }
+}
+----
+
+=== Autre exemple de contrainte simple
+
+[source,java]
+----
+public class Foo {
+    static <T extends Number> T max(T a, T b) {
+        if (a.doubleValue() > b.doubleValue()) {
+            return a;
+        }
+        return b;
+    }
+
+    public static void main(String... args) {
+        Foo.max(1, 2);
+        Foo.max(1.0, 2.0);
+        Foo.max(1, 2.0);
+    }
+}
+----
+
+=== Exemple de contrainte complexe
+
+[source,java]
+----
+public class Collections {
+
+    public static <T> void copy(List<? super T> dest,
+                                List<? extends T> src) {
+        ...
+    }
+}
+
+List<? super Integer> dest = new ArrayList<>();
+List<? extends Integer> src = Arrays.asList(0, 1, 2, 4);
+Collections.copy(dest, src);
+----
