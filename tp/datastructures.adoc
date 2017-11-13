@@ -9,7 +9,6 @@ Nicolas Frankel
 :sectanchors:
 :numbered:
 :experimental:
-:icons: font
 :imagesdir: ./images/datastructures
 :toc:
 
@@ -166,8 +165,7 @@ public class Person {
         persons.add(p2);
         persons.add(p3);
         System.out.println(persons.size());           <1>
-        Object o = persons.iterator().next();
-        System.out.println(p1 == o);                  <2>
+        System.out.println(p1.equals(p2));            <2>
     }
 }
 ----
@@ -176,7 +174,7 @@ En surchargeant uniquement les méthodes adéquates dans la classe `Person`, fai
 
 [source]
 ----
-1    <1>
+2    <1>
 true <2>
 ----
 
