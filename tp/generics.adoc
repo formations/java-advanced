@@ -1,0 +1,380 @@
+= Travaux pratiques - Génériques
+Nicolas Frankel
+:doctype: article
+:encoding: utf-8
+:lang: fr
+:toc:
+:toc-title: Table des matières
+:toc-placement!:
+:sectanchors:
+:numbered:
+:experimental:
+:toc:
+:icons: font
+
+include::../common/license.adoc[]
+
+toc::[]
+
+== Références
+
+En anglais : ::
+
+* https://docs.oracle.com/javase/tutorial/java/generics/index.html[Lesson: Generics^]
+* http://www.angelikalanger.com/GenericsFAQ/JavaGenericsFAQ.html#TOC[Java Generics FAQs - Frequently Asked Questions^]
+
+En français : ::
+* https://openclassrooms.com/courses/apprenez-a-programmer-en-java/la-genericite-en-java[La généricité en Java^]
+* https://www.jmdoudoux.fr/java/dej/chap-jdk1.5.htm#jdk1.5-6[Les generics^]
+
+== Compréhension
+
+Dans cette section, pour chaque question, la procédure est de :
+
+. Déterminer si le code compile
+. Vérifier dans l'AGL
+. Indiquer la raison pourquoi le code compile (ou pas)
+
+[source,code]
+ArrayList<Integer> integers = new ArrayList<Integer>(); <1>
+
+[source,code]
+List<Integer> integers = new ArrayList<>(); <2>
+
+[source,code]
+List<? extends Integer> integers = new ArrayList<>(); <3>
+
+[source,code]
+List<? extends Integer> integers = new ArrayList<?>(); <4>
+
+[source,code]
+----
+List<? extends Integer> integers = new ArrayList<>(); <5>
+integers.add(1);
+----
+
+[source,code]
+----
+List<? extends Integer> integers = Arrays.asList(1, 2, 3); <6>
+integers.get(1);
+----
+
+[source,code]
+----
+List<? super Integer> numbers = new ArrayList<>(); <7>
+numbers.add(1);
+----
+
+[source,code]
+----
+List<? super Integer> numbers = Arrays.asList(1, 2, 3); <8>
+numbers.get(1);
+----
+
+[source,code]
+----
+public class Generic<T> {} <9>
+----
+
+[source,code]
+----
+public class Generic<T> { <10>
+
+    public Generic(T t) {}
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <11>
+
+    public Generic(T t) {}
+    
+    public static void main(String... args) {
+        Generic g = new Generic(new Object());
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <12>
+
+    public Generic(T t) {}
+    
+    public static void main(String... args) {
+        Generic g = new Generic<>(new Object());
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <13>
+
+    public Generic(T t) {}
+    
+    public static void main(String... args) {
+        Generic<?> g = new Generic<>(new Object());
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <14>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+    
+    public static void main(String... args) {
+        Generic<?> g = new Generic<>(new Object());
+        ? t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <15>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+    
+    public static void main(String... args) {
+        Generic<?> g = new Generic<>(new Object());
+        Object t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <16>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+    
+    public static void main(String... args) {
+        Generic<Object> g = new Generic<>(new Object());
+        Object t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <17>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic<? extends Number> g = new Generic<>(1);
+        Object t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <18>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic<? extends Number> g = new Generic<>(1);
+        Number t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <19>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic<? extends Number> g = new Generic<>(1);
+        Integer t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <20>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic<? super Number> g = new Generic<>(1);
+        Number t = g.t;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <21>
+
+    private T t;
+
+    public static void main(String... args) {
+        Generic<? super Number> g = new Generic<>();
+        g.t = 1;
+    }
+} 
+----
+
+[source,code]
+----
+public class Generic<T> { <22>
+
+    public static class GenericChild<T> extends Generic<T> {} 
+}
+----
+
+[source,code]
+----
+public class Generic<T> { <23>
+
+    public static class GenericChild extends Generic<Number> {} 
+}
+----
+
+[source,code]
+----
+public class Generic<T> { <24>
+
+    public static class GenericChild<V> extends Generic<Number> {}
+}
+----
+
+[source,code]
+----
+public class NotGeneric { <25>
+
+    public void apply(T t) {}
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <26>
+
+    public <T> void apply(T t) {}
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <27>
+
+    public <V extends T> void apply(T t) {}
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <28>
+
+    public <T extends V> void apply(T t) {}
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <29>
+
+    public <T extends Number> void apply(T t) {}
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <30>
+
+    public <T> R apply(T t) {
+        return (R) new Object();
+    }
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <31>
+
+    public <T, R> R apply(T t) {
+        return (R) new Object();
+    }
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <32>
+
+    public <T, R extends Number> R apply(T t) {
+        return (R) new Object();
+    }
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <33>
+
+    public <T, R super Number> R apply(T t) {
+        return (R) new Object();
+    }
+} 
+----
+
+[source,code]
+----
+public class NotGeneric { <34>
+
+    public <T, R extends Number> R apply(T t) {
+        return (R) Integer.valueOf(1);
+    }
+} 
+----
+
+[source,code]
+----
+public class LastButNotLeast<T,V> { <35>
+
+    public void apply<T> {}
+    public void apply<V> {}
+}
+----
+
+== Conception
+
+En utilisant les génériques, développer une méthode unique qui permet d'additionner deux nombres de n'importe quel type primitif (`byte`, `int`, `long`, `float` et `double`) et qui retourne un `double`.

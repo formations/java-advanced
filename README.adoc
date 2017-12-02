@@ -13,4 +13,5 @@ include::license.adoc[]
 * <<tp/datastructures.adoc#,Travaux Pratiques>>
 . Génériques
 * <<cours/generics.adoc#,Cours>>
+* <<tp/generics.adoc#,Travaux Pratiques>>
 . Streams
