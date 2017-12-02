@@ -1,5 +1,7 @@
 = Génériques
 
+// bundle exec asciidoctor-revealjs -a revealjs_history=true -a revealjs_theme=white -a revealjs_slideNumber=true -a linkcss -a customcss=../style.css -a revealjsdir=https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0 cours/*.adoc
+
 :imagesdir: ./images/generics
 
 == Transtypage
@@ -17,18 +19,19 @@ int number = (int) intObject;
 
 === Problème
 
-* Le transtypage rapproche un langage typé statiquement d'un language typé dynamiquement
+* Le développeur assume la responsabilité de la compilation
+** Possibilité d'exception à l'exécution
 * Comment améliorer la vérification de type à la compilation ?
 
 === Types génériques
 
 * Depuis Java 5
 * Implémentation des classes template en UML
-* Contraint le type des variables
+* Contraint les types
 
-=== Utilisation de génériques
+=== Utilisation des génériques
 
-* Contrainte de type indiquée entre chevrons après la classe
+* Contrainte de type indiquée entre chevrons
 ** Obligatoire pour la déclaration
 ** Optionnel pour l'instanciation (Java 7)
 
@@ -54,7 +57,7 @@ List<Integer> ints = Arrays.asList(1, 2, 3);
 int number = ints.get(0);
 ----
 
-=== Type erasure
+== Type erasure
 
 * Vérification à la compilation
 * Aucune différence dans le _bytecode_
@@ -66,6 +69,28 @@ int number = ints.get(0);
 interface Foo {
     void bar(List<String> strings);
     void bar(List<Integer> integers); // compilation error
+}
+----
+
+== Création de classe générique
+
+[source,code]
+----
+interface Foo<T> {
+    void apply(T t);
+}
+----
+
+=== Sous-classe
+
+[source,code]
+----
+class Bar1 implements Foo<String> {
+    public void apply(String string) {}
+}
+
+class Bar2<T> implements Foo<T> {
+    public void apply(T t) {}
 }
 ----
 
@@ -206,9 +231,9 @@ public class Foo {
     }
 
     public static void main(String... args) {
-        Foo.max(1, 2);
-        Foo.max(1.0, 2.0);
-        Foo.max(1, 2.0);
+        int max1 = Foo.max(1, 2);
+        double max2 = Foo.max(1.0, 2.0);
+        Number max = Foo.max(1, 2.0);
     }
 }
 ----
