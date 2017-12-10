@@ -1,0 +1,493 @@
+= Streams
+
+:imagesdir: ./images/streams
+
+== Lambda
+
+* Simplifie l'écriture des classes internes anonymes
+* Java 8+
+
+=== Interface fonctionnelle
+
+* Interface qui comporte une méthode *unique*
+** Hors `private`, `default` et `static`
+* De préférence annotée `@FunctionalInterface`
+
+=== Interface fonctionnelle
+
+La méthode (donc l'interface) peut être assimilée à une fonction
+
+=== Fonction
+
+// https://en.wikipedia.org/wiki/Function_(mathematics)#/media/File:Function_machine2.svg
+
+[.stretch]
+image::Function_machine2.svg[]
+
+// === Fonction pure
+// 
+// [quote,Wikipedia,https://fr.wikipedia.org/wiki/Fonction_pure]
+// ____
+// Le terme fonction pure désigne une fonction :
+// 
+// * dont le résultat ne dépend que des arguments
+// * qui n'a pas d'effets de bord (changement d'état ou E/S)
+// ____
+// 
+// === Exemple de fonction pure
+// 
+// [source,java]
+// ----
+// public int add (int i1, int i2) {
+//     return i1 + i2;
+// }
+// ----
+// 
+// === Contre-exemple de fonction pure
+// 
+// [source,java]
+// ----
+// public class Person {
+// 
+//     private final LocalDate birthDate;
+// 
+//     public int getAge() {
+//         LocalDate now = LocalDate.now();
+//         return Period.between(birthDate, now).getYears();
+//     }
+// }
+// ----
+
+=== Interfaces fonctionnelles
+
+[.stretch]
+image::functional-interfaces-jdk.svg[]
+
+=== Exemple de définition
+
+[source,java]
+----
+@FunctionalInterface
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+----
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+Comparator<String> c1 = new Comparator<String>() {
+    @Override
+    public int compare(String s1, String s2) {
+        return s1.compareToIgnoreCase(s2);
+    }
+};
+
+Comparator<String> c2 = (String s1, String s2) -> {
+    return s1.compareToIgnoreCase(s2);
+};
+----
+
+=== Simplification 1
+
+Le type peut être omis
+
+[source,java]
+----
+Comparator<String> c = (s1, s2) -> {
+    return s1.compareToIgnoreCase(s2);
+};
+----
+
+=== Simplification 2
+
+Si le bloc est une simple expression :
+
+* Suppression du bloc
+* Omission du mot-clé `return`
+* Omission du `;` final
+
+[source,java]
+Comparator<String> c = (s1, s2) -> s1.compareToIgnoreCase(s2);
+
+=== Simplification 3 : Référence de méthode
+
+Quand une expression appelle une méthode existante :
+
+* Forme abrégée `<Type>` + `::` + `<méthode>`
+
+[source,java]
+Comparator<String> c = String::compareToIgnoreCase;
+
+=== Simplification 4
+
+Si il n'y a qu'un unique argument :
+
+* Suppression des parenthèses
+
+[source,java]
+Function<Integer,Integer> f = i -> i + 1;
+
+== Cas d'utilisation de _streams_
+
+* Soit une liste de `Person`
+* Calculer la moyenne de l'âge des personnes
+
+=== Implémentation basique
+
+[source,java]
+----
+List<Person> persons = ...
+
+double sum = 0.0;
+for (Person person: persons) {
+    sum += person.getAge();
+}
+
+double average = sum / persons.size();
+----
+
+=== Problème
+
+Beaucoup de _boilerplate_ code
+
+* Focus sur le *comment*, pas sur le *quoi*
+* A l'inverse du tri, `sort()`
+
+=== Autres cas d'utilisation
+
+* Capitaliser les noms de famille
+* Conserver uniquement les adultes
+* Combinaison de cas d'utilisation
+* etc.
+
+=== _Stream_
+
+Un _stream_ est un pipeline de fonctions.
+
+=== _Stream_ en Java 8
+
+* _Stream_ de départ
+* Opérations intermédiaires -> *
+* Opérations terminales -> 1
+* Peut-être infini
+
+=== Opération intermédiaire
+
+* Retourne un _stream_
+* _Lazily executed_ (à la demande)
+
+=== Opération terminale
+
+* Retourne un type concret
+** Ou produit des effets de bord
+* _Eagerly executed_ (lors de l'appel)
+* Démarre le pipeline
+
+== Opérations intermédiaires
+
+* `map()`
+* `filter()`
+* `limit()`
+* `skip()`
+* `distinct()`
+* `sorted()`
+
+=== Map
+
+* Transforme un _stream_ de types T en un autre _stream_ de types R
+* Via une instance de `Function<T, R>`
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .map(new Function<Person,String>() {
+        @Override
+        public String apply(Person person) {
+            return person.getFirstName();
+        }
+    })
+    .map(new Function<String,String>() {
+        @Override
+        public String apply(String name) {
+            return name.toUpperCase();
+        }
+    });
+----
+
+=== Utilisation de lambdas
+
+[source,java]
+----
+persons
+    .stream()
+    .map(person -> person.getFirstName())
+    .map(name -> name.toUpperCase());
+----
+
+=== Utilisation de références
+
+[source,java]
+----
+persons
+    .stream()
+    .map(Person::getFirstName)
+    .map(String::toUpperCase);
+----
+
+=== Filter
+
+* Transforme un _stream_ de taille x en un autre _stream_ de taille y < x
+* Via une instance de `Predicate`
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .filter(person -> person.getAge() >= 18);
+----
+
+=== Limit
+
+* Transforme un _stream_ de taille x en un autre _stream_ de taille y < x
+* En conservant les n premiers éléments
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .limit(15);
+----
+
+=== Skip
+
+* Transforme un _stream_ de taille x en un autre _stream_ de taille y < x
+* En omettant les n premiers éléments
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .skip(15);
+----
+
+=== Distinct
+
+* Transforme un _stream_ de taille x en un autre _stream_ de taille y < x
+* En omettant les doublons
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .distinct();
+----
+
+=== Sorted
+
+* Transforme un _stream_ d'éléments en un _stream_ d'éléments ordonnés
+* Via une instance de `Comparator<T>`
+** Ou selon l'ordre naturel des éléments
+
+=== !
+
+[source,java]
+----
+persons
+    .stream()
+    .sorted((p1, p2) -> p1.getAge() - p2.getAge());
+
+persons
+    .stream()
+    .sorted(Comparator.comparingInt(Person::getAge));
+----
+
+== Opérations finales
+
+* `collect()`
+* `forEach()`
+* `reduce()`
+
+=== Collect
+
+* Regroupe les éléments d'un _stream_ dans une collection concrète
+* Via une instance de `Collector<T, A, R>`
+
+=== Collector
+
+image::collector.svg[]
+
+=== !
+
+[source,java]
+----
+stream.collect(Collectors.toList());
+stream.collect(Collectors.toSet());
+stream.collect(Collectors.toMap(
+    person -> person.getId(),
+    person -> person));
+stream.collect(Collectors.toMap(
+    Person::getId,
+    Function.identity()));
+----
+
+=== For each
+
+* Invoque des effets de bord sur les éléments d'un _stream_
+* Via une instance de `Consumer<T>`
+
+=== !
+
+[source,java]
+----
+stream.forEach(person -> {
+    System.out.println(person);
+});
+stream.forEach(System.out::println);
+----
+
+=== Reduce
+
+* Aggrège les éléments d'un _stream_ dans un élément unique
+* Via une instance de `BinaryOperator<T>`
+
+=== !
+
+[source,java]
+stream.mapToInt(Person::getAge).average();
+
+== Création de _streams_
+
+* Depuis une collection existante
+* Depuis un tableau existant
+* Depuis des éléments
+* Depuis une fonction
+
+=== !
+
+image::stream.svg[]
+
+=== Depuis une collection existante
+
+[source,java]
+List<Person> persons = ...
+Stream<Person> stream = persons.stream();
+
+=== Depuis un tableau existant
+
+[source,java]
+Person[] persons = ...
+Stream<Person> stream = Arrays.stream(persons);
+
+=== Depuis des éléments
+
+[source,java]
+Stream<String> stream = Stream.of("one", "two", "three");
+
+=== Depuis une fonction
+
+[source,java]
+Stream<String> stream = Stream.generate(() -> "X");
+Stream<Integer> stream = Stream.iterate(0, i -> i + 1);
+
+== Fonctionnalités supplémentaires
+
+image::stream-more.svg[]
+
+=== Match
+
+all:: Tous les éléments du _stream_ vérifient le prédicat
+none:: Aucun élément du _stream_ ne vérifie le prédicat
+any:: Au moins 1 élément du _stream_ vérifie le prédicat
+
+=== Find
+
+any:: Renvoie un élément quelconque du _stream_
+first:: Renvoie le premier élément du _stream_ (s'il est ordonné)
+
+=== Peek
+
+* Permet d'accéder aux élément du _stream_ sans le modifier
+* Exemple : log l'élément
+
+=== Flat map
+
+Assemble les éléments de n collections dans un _stream_ unique
+
+=== Exemple
+
+image::order-product.svg[]
+
+Comment récupérer tous les produits commandés ?
+
+=== !
+
+[source,java]
+----
+Stream<List<Product>> streamOfList = orders
+    .stream()
+    .map(Order::getProducts);
+
+Stream<Product> streamOfProducts = orders
+    .stream()
+    .flatMap(order -> order.getProducts().stream());
+----
+
+== Divers
+
+=== Stream de types primitifs
+
+* `IntStream`
+* `DoubleStream`
+* `LongStream`
+
+=== Spécificités
+
+image::primitive-stream.svg[]
+
+=== Optional
+
+image::optional.svg[]
+
+=== !
+
+[source,java]
+----
+Order order = repository.load(1L);
+
+if (order != null) {
+    // Do something with person
+}
+
+Optional<Order> optional = repository.load(1L);
+
+optional.ifPresent(order -> {
+    // Do something with person
+});
+----
+
+=== !
+
+[source,java]
+----
+Order order = repository.load(1L);
+
+if (order == null) {
+    order = new Order();
+}
+
+Optional<Order> optional = repository.load(1L);
+Order order = optional.getOrElse(new Order());
+----
