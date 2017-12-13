@@ -1,0 +1,310 @@
+= Travaux pratiques - Streams
+Nicolas Frankel
+:doctype: article
+:encoding: utf-8
+:lang: fr
+:toc:
+:toc-title: Table des matières
+:toc-placement!:
+:sectanchors:
+:numbered:
+:experimental:
+:icons: font
+:toc:
+
+include::../license.adoc[]
+
+toc::[]
+
+== Références
+
+En français : ::
+* <<../cours/streams.adoc#,Slides>>
+* https://www.jmdoudoux.fr/java/dej/chap-lambdas.htm[Les expressions lambda^]
+* http://blog.ippon.fr/2014/03/17/api-stream-une-nouvelle-facon-de-gerer-les-collections-en-java-8/[JAPI Stream - Une nouvelle façon de gérer les Collections en Java 8^]
+* https://www.slideshare.net/jpaumard/java-8streamscollectorspatterns[Java 8, Streams et collectors^]
++
+En anglais : ::
+* http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html[Processing Data with Java SE 8 Streams^]
+* https://docs.oracle.com/javase/tutorial/collections/streams/index.html[Lesson: Aggregate Operations^]
+* http://www.baeldung.com/java-8-streams[The Java 8 Stream API Tutorial^]
+* http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/[Java 8 Stream Tutorial^]
+* https://zeroturnaround.com/rebellabs/java-8-streams-cheat-sheet/[Java Streams cheat sheet^]
+
+== Lambdas
+
+=== Reconnaissance d'interfaces fonctionnelles
+
+Pour chaque interface suivante, déterminer s'il s'agit d'une interface fonctionnelle - qui peut être utilisée comme lambda et justifier votre réponse.
+
+[source,java]
+public interface Foo { } <1>
+
+[source,java]
+public interface Foo { <2>
+    void foo();
+}
+
+[source,java]
+public interface Foo { <3>
+    int foo();
+}
+
+[source,java]
+public interface Foo { <4>
+    int foo(int someInt);
+}
+
+[source,java]
+interface Foo { <5>
+    void foo();
+}
+
+[source,java]
+@FunctionalInterface
+interface Foo { <6>
+    void foo();
+}
+
+[source,java]
+----
+@FunctionalInterface
+public interface Foo { <7>
+
+    default public int bar(int someInt) {
+        return 2 * someInt;
+    }
+
+    int foo(int someInt);
+}
+----
+
+[source,java]
+----
+public interface Foo { }
+
+public interface Bar extends Foo { <8>
+    void bar();
+}
+----
+
+[source,java]
+----
+public interface Foo {
+    void foo();
+}
+
+public interface Bar extends Foo { <9>
+    void bar();
+}
+----
+
+=== Equivalence interface fonctionnelle lambda
+
+Pour chacune des interfaces fonctionnelles suivantes, déterminer la lambda qui équivalente *sans l'aide d'un AGL*.
+Puis vérifier votre réponse à l'aide de celui-ci.
+
+[source,java]
+----
+@FunctionalInterface
+public interface Supplier<T> {
+
+    T get();
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface Consumer<T> {
+
+    void accept(T t);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface Function<T, R> {
+
+    R apply(T t);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface BiFunction<T, U, R> {
+
+    R apply(T t, U u);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface ObjLongConsumer<T> {
+
+    void accept(T t, long value);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface IntUnaryOperator {
+
+    int applyAsInt(int operand);
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface TemporalQuery<R> {
+
+    R queryFrom(TemporalAccessor temporal);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface Callback<P,R> {
+
+    R call(P param);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface BuilderFactory {
+
+    Builder<?> getBuilder(Class<?> type);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface ChangeListener<T> {
+
+    void changed(ObservableValue<? extends T> observable, T oldValue, T newValue);
+----
+
+[source,java]
+----
+@FunctionalInterface
+interface Recognizer {
+
+    boolean recognize(int c);
+}
+----
+
+[source,java]
+----
+@FunctionalInterface
+public interface Interpolatable<T> {
+
+    public T interpolate(T endValue, double t);
+}
+----
+
+=== Equivalence lambda interface fonctionnelle
+
+Pour chacune des lambdas suivantes, proposer une interface fonctionnelle du JDK équivalente.
+
+[source,java]
+() -> "Hello world"; <1>
+
+[source,java]
+s -> s; <2>
+
+[source,java]
+(String s1, String s2) -> s1.compareIgnoreCase(s2); <3>
+
+[source,java]
+f -> "Hello".equals(f); <4>
+
+[source,java]
+() -> System.out.println("Hello world"); <5>
+
+[source,java]
+o -> o.hashCode(); <6>
+
+[TIP]
+====
+. Rechercher dans les _packages_ `java.util` et `java.util.function`
+. Rechercher dans les interfaces annotés avec `@FunctionalInterface`
+====
+
+== Streams
+
+Soit la classe suivante :
+
+[source,java]
+----
+public class Person {
+
+    private final long id;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate birthDate;
+    
+    public Person(long id, String firstName, String lastName, LocalDate birthDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+    
+    // Getters for fields
+}
+----
+
+=== Opération sur les streams
+
+A partir d'une instance de `Stream<Person>`, retourner une _stream_ qui répond aux contraintes suivantes :
+
+. Seules les personnes dont le nom de famille est "Doe"
+. Seules les personnes dont l'age est supérieur à 18 à la date du jour
+. Seules les personnes dont le nom de famille est le même que le prénom
+. Seuls les noms de famille, en majuscules, sans doublons
+. Toutes les personnes, ordonnées par date de naissance croissante
+
+=== Opérations sur les collections
+
+Implémenter les méthodes suivantes suivantes en utilisant uniquement les _streams_.
+
+[source,java]
+List<Person> onlyAdults(List<Person> persons) { }
+
+[source,java]
+double averageAge(List<Person> persons) { }
+
+[source,java]
+double lastNamesSeparatedWithSpace(List<Person> persons) { }
+
+[source,java]
+Map<String, List<Person>> groupByFirstName(List<Person> persons) { }
+
+=== Divers
+
+A l'aide de _streams_ :
+
+. Calculer la factorielle de 10
++
+[NOTE]
+====
+* n! = n x (n - 1) pour n > 0
+* 0! = 1
+====
++
+. Calculer la suite de Fibonacci pour n = 5
++
+[NOTE]
+====
+* Fib~n~ = Fib~n-1~ + Fib~n-2~ pour n > 2
+* Fib~1~ = 1
+* Fib~2~ = 1, 
+====
