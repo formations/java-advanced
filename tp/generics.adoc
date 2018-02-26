@@ -11,6 +11,7 @@ Nicolas Frankel
 :experimental:
 :toc:
 :icons: font
+:imagesdir: ./images/generics
 
 include::../common/license.adoc[]
 
@@ -377,4 +378,28 @@ public class LastButNotLeast<T,V> { <35>
 
 == Conception
 
-En utilisant les génériques, développer une méthode unique qui permet d'additionner deux nombres de n'importe quel type primitif (`byte`, `int`, `long`, `float` et `double`) et qui retourne un `double`.
+. En utilisant les génériques, développer une méthode unique qui permet d'additionner deux nombres de n'importe quel type primitif (`byte`, `int`, `long`, `float` et `double`) et qui retourne un `double`.
+. Soit le diagramme de classes suivant :
++
+image::triple.svg[align="center"]
++
+Modifier la conception pour faire en sorte qu'il soit possible de récupérer l'object stocké sans qu'il soit nécessaire de transtyper.
+Par exemple :
++
+[source,java]
+----
+Triple triple = new Triple("Hello", new Date(), 15);
+String s = triple.first();
+Date d = triple.second();
+Integer i = triple.third();
+----
+. Soit le diagramme de classes suivant :
++
+image::appendable.svg[align="center"]
++
+Améliorer la conception pour :
++
+* Qu'il soit possible de compiler `MyString.append(MyString myString)` et `MyList.append(MyList myList)`
+* Qu'il ne soit pas possible de compiler `MyString.append(MyList myList)` et `MyList.append(MyString myString)`
++
+Implémenter le code et vérifier
