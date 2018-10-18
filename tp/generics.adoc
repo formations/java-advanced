@@ -34,7 +34,7 @@ Dans cette section, pour chaque question, la procédure est de :
 
 . Déterminer si le code compile
 . Vérifier dans l'AGL
-. Indiquer la raison pourquoi le code compile (ou pas)
+. Indiquer la raison pour laquelle le code compile (ou pas)
 
 [source,code]
 ArrayList<Integer> integers = new ArrayList<Integer>(); <1>
