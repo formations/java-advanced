@@ -108,7 +108,6 @@ Puis vérifier votre réponse à l'aide de celui-ci.
 ----
 @FunctionalInterface
 public interface Supplier<T> {
-
     T get();
 }
 ----
@@ -117,7 +116,6 @@ public interface Supplier<T> {
 ----
 @FunctionalInterface
 public interface Consumer<T> {
-
     void accept(T t);
 }
 ----
@@ -126,7 +124,6 @@ public interface Consumer<T> {
 ----
 @FunctionalInterface
 public interface Function<T, R> {
-
     R apply(T t);
 }
 ----
@@ -135,7 +132,6 @@ public interface Function<T, R> {
 ----
 @FunctionalInterface
 public interface BiFunction<T, U, R> {
-
     R apply(T t, U u);
 }
 ----
@@ -144,7 +140,6 @@ public interface BiFunction<T, U, R> {
 ----
 @FunctionalInterface
 public interface ObjLongConsumer<T> {
-
     void accept(T t, long value);
 }
 ----
@@ -153,15 +148,14 @@ public interface ObjLongConsumer<T> {
 ----
 @FunctionalInterface
 public interface IntUnaryOperator {
-
     int applyAsInt(int operand);
+}
 ----
 
 [source,java]
 ----
 @FunctionalInterface
 public interface TemporalQuery<R> {
-
     R queryFrom(TemporalAccessor temporal);
 }
 ----
@@ -170,7 +164,6 @@ public interface TemporalQuery<R> {
 ----
 @FunctionalInterface
 public interface Callback<P,R> {
-
     R call(P param);
 }
 ----
@@ -179,7 +172,6 @@ public interface Callback<P,R> {
 ----
 @FunctionalInterface
 public interface BuilderFactory {
-
     Builder<?> getBuilder(Class<?> type);
 }
 ----
@@ -188,15 +180,14 @@ public interface BuilderFactory {
 ----
 @FunctionalInterface
 public interface ChangeListener<T> {
-
     void changed(ObservableValue<? extends T> observable, T oldValue, T newValue);
+}
 ----
 
 [source,java]
 ----
 @FunctionalInterface
-interface Recognizer {
-
+public interface Recognizer {
     boolean recognize(int c);
 }
 ----
@@ -205,7 +196,6 @@ interface Recognizer {
 ----
 @FunctionalInterface
 public interface Interpolatable<T> {
-
     public T interpolate(T endValue, double t);
 }
 ----
