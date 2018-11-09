@@ -273,7 +273,7 @@ List<Person> onlyAdults(List<Person> persons) { }
 double averageAge(List<Person> persons) { }
 
 [source,java]
-double lastNamesSeparatedWithSpace(List<Person> persons) { }
+String lastNamesSeparatedWithSpace(List<Person> persons) { }
 
 [source,java]
 Map<String, List<Person>> groupByFirstName(List<Person> persons) { }
