@@ -371,8 +371,8 @@ public class NotGeneric { <34>
 ----
 public class LastButNotLeast<T,V> { <35>
 
-    public void apply<T> {}
-    public void apply<V> {}
+    public void apply<T>() {}
+    public void apply<V>() {}
 }
 ----
 
