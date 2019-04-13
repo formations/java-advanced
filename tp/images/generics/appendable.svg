@@ -3,7 +3,7 @@
 interface Appendable {
  + {abstract} append(appendable: Appendable)
 }
-MyType .up.|> Appendable
+MyString .up.|> Appendable
 MyList .up.|> Appendable
 hide empty attributes
 hide empty methods
