@@ -1,0 +1,163 @@
+= La modélisation du temps
+
+:imagesdir: ./images/datetime
+
+== L'API Date
+
+* Disponible depuis les premières versions de Java
+* Très déconseillée
+
+=== La classe Date
+
+[quote, JavaDocs, https://docs.oracle.com/javase/7/docs/api/java/util/Date.html]
+The class `Date` represents a specific instant in time, with millisecond precision.
+
+=== !
+
+[.stretch]
+image::date.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+Date date = new Date();
+
+int hours = date.getHours();
+
+date.setHours(hours + 1);
+----
+
+=== Problème avec Date
+
+La classe confond la notion d'instant, et la mesure de cet instant dans un référentiel spécifique (p.e. le calendrier grégorien)
+
+=== La classe Calendar
+
+[quote, JavaDocs, https://docs.oracle.com/javase/7/docs/api/java/util/Calendar.html]
+The `Calendar` class is an abstract class that provides methods for converting between a specific instant in time and a set of calendar fields such as `YEAR`, `MONTH`, `DAY_OF_MONTH`, `HOUR`, and so on, and for manipulating the calendar fields, such as getting the date of the next week.
+
+=== !
+
+[.stretch]
+image::calendar.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+Calendar now = Calendar.getInstance();
+
+int hours = now.get(Calendar.HOUR_OF_DAY);
+
+now.set(Calendar.HOUR_OF_DAY, 1);
+now.add(Calendar.HOUR_OF_DAY, 1);
+now.roll(Calendar.HOUR_OF_DAY, 1);
+----
+
+=== Problème avec Calendar
+
+Calendar est une classe mutable:
+son état peut changer, ce qui rend compliqué son utilisation.
+
+== La nouvelle API Date/Time
+
+* Corrige les problèmes de `Date` et de `Calendar`
+* Disponible depuis Java 8 dans le JDK
+* Directement inspiré de la librairie https://www.joda.org/joda-time/[Joda Time^]
+
+=== Instant
+
+[quote, JavaDocs, https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html]
+An instantaneous point on the time-line.
+
+=== !
+
+image::instant.svg[]
+
+== Duration et Period
+
+[quote, JavaDocs, http://bit.ly/j-t-Duration]
+A time-based amount of time, such as '34.5 seconds'.
+
+[quote, JavaDocs, http://bit.ly/j-t-Period]
+A date-based amount of time in the ISO-8601 calendar system, such as '2 years, 3 months and 4 days'.
+
+=== !
+
+image::duration-period.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+Instant now = Instant.now();
+
+Instant in5hours4minutes =
+    instant.plus(Duration.ofHours(5).plusMinutes(4));
+----
+
+== !
+
+[options="autowidth",cols=2]
+|===
+
+| `LocalDate`
+| A date without a time-zone in the ISO-8601 calendar system, such as `2007-12-03`.
+
+| `LocalTime`
+| A time without a time-zone in the ISO-8601 calendar system, such as `10:15:30`.
+
+| `LocalDateTime`
+| A date-time without a time-zone in the ISO-8601 calendar system, such as `2007-12-03T10:15:30`.
+
+|===
+
+=== !
+
+image::localdate.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+LocalDate now = LocalDate.now();
+
+LocalDate christmasThisYear =
+    LocalDate.of(now.getYear(), 12, 25);
+----
+
+=== Temporal adjusters
+
+image:temporaladjusters.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+LocalDate now = LocalDate.now();
+
+LocalDate thirdMondayFromNowOn = now
+    .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+    .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+    .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+----
+
+=== Autres dates disponibles
+
+image::other-dates.svg[]
+
+== Formatage et analyse
+
+image::formatter.svg[]
+
+=== Exemple d'utilisation
+
+[source,java]
+----
+LocalDate now = LocalDate.now();
+DateTimeFormatter formatter =
+    DateTimeFormatter.ofPattern("yyyy/MM/dd");
+String text = now.format(formatter);
+System.out.println(text);
+----

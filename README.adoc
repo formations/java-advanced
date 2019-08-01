@@ -17,3 +17,6 @@ include::license.adoc[]
 . Streams
 * <<cours/streams.adoc#,Cours>>
 * <<tp/streams.adoc#,Travaux Pratiques>>
+. Modélisation du temps
+* <<cours/datetime.adoc#,Cours>>
+* <<tp/datetime.adoc#,Travaux Pratiques>>
