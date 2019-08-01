@@ -1,0 +1,48 @@
+= Travaux pratiques - Modélisation du temps
+Nicolas Frankel
+:doctype: article
+:encoding: utf-8
+:lang: fr
+:toc:
+:toc-title: Table des matières
+:toc-placement!:
+:sectanchors:
+:numbered:
+:experimental:
+:icons: font
+:toc:
+
+include::../license.adoc[]
+
+toc::[]
+
+== Références
+
+En français : ::
+* <<../cours/datetime.adoc#,Slides>>
+* https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013706-decouvrez-la-nouvelle-api-de-gestion-des-dates-de-java-8[Découvrez la nouvelle API de gestion des dates de Java 8^]
++
+En anglais : ::
+* https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html[Package java.time^]
+* https://www.baeldung.com/java-8-date-time-intro[Introduction to the Java 8 Date/Time API^]
+* https://www.foreach.be/blog/java-8-date-and-time[Migrating from java.util.Date to the new API's^]
+
+== Tour de chauffe
+
+Afficher la date du jour dans la sortie standard::
+Rester simple, pas besoin d'utiliser de formateur
+Déterminer quel est le jour de la semaine du 1er janvier 1905::
+Compter le nombre de jours ouvrés entre le 1er janvier 2020 et le 1er juin 2020::
+* Un jour est considéré comme ouvré s'il n'est ni un samedi, ni un dimanche
+* Ne pas utiliser la classe `TemporalAdjusters`
+Compter le nombre de jours ouvrés du mois de Janvier 2020::
+Utiliser le code précédent
+
+== Aller plus loin
+
+Afficher la date du jour dans la sortie standard::
+Utiliser la classe `TimeFormatter`.
+La chaîne de caractères doit être de la forme suivante:
+`1 août 2019`.
+Compter le nombre de jours ouvrés entre le 1er janvier 2020 et le 1er juin 2020::
+Utiliser la classe `TemporalAdjusters`
