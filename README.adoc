@@ -20,3 +20,5 @@ include::license.adoc[]
 . Modélisation du temps
 * <<cours/datetime.adoc#,Cours>>
 * <<tp/datetime.adoc#,Travaux Pratiques>>
+. Internationalisation
+* <<cours/internationalization.adoc#,Cours>>
