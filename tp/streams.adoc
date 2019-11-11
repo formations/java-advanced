@@ -101,7 +101,7 @@ public interface Bar extends Foo { <9>
 
 === Equivalence interface fonctionnelle lambda
 
-Pour chacune des interfaces fonctionnelles suivantes, déterminer la lambda qui équivalente *sans l'aide d'un AGL*.
+Pour chacune des interfaces fonctionnelles suivantes, déterminer la lambda équivalente *sans l'aide d'un AGL*.
 Puis vérifier votre réponse à l'aide de celui-ci.
 
 [source,java]
