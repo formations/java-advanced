@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Streams</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/white.css" id="theme"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides"><section class="title"><h1>Streams</h1></section><section><section id="_lambda"><h2>Lambda</h2><div class="ulist"><ul><li><p>Simplifie l&#8217;écriture des classes internes anonymes</p></li><li><p>Java 8+</p></li></ul></div></section><section id="_interface_fonctionnelle"><h2>Interface fonctionnelle</h2><div class="ulist"><ul><li><p>Interface qui comporte une méthode <strong>unique</strong></p><div class="ulist"><ul><li><p>Hors <code>private</code>, <code>default</code> et <code>static</code></p></li></ul></div></li><li><p>De préférence annotée <code>@FunctionalInterface</code></p></li></ul></div></section><section id="_interface_fonctionnelle_2"><h2>Interface fonctionnelle</h2><div class="paragraph"><p>La méthode (donc l&#8217;interface) peut être assimilée à une fonction</p></div></section><section id="_fonction"><h2>Fonction</h2><div class="imageblock stretch" style=""><img src="./images/streams/Function_machine2.svg" alt="Function machine2" height="100%"></div></section><section id="_interfaces_fonctionnelles"><h2>Interfaces fonctionnelles</h2><div class="imageblock stretch" style=""><img src="./images/streams/functional-interfaces-jdk.svg" alt="functional interfaces jdk" height="100%"></div></section><section id="_exemple_de_dfinition"><h2>Exemple de définition</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">@FunctionalInterface
+public interface Comparator&lt;T&gt; {
+    int compare(T o1, T o2);
+}</code></pre></div></div></section><section id="_exemple_d_utilisation"><h2>Exemple d&#8217;utilisation</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Comparator&lt;String&gt; c1 = new Comparator&lt;String&gt;() {
+    @Override
+    public int compare(String s1, String s2) {
+        return s1.compareToIgnoreCase(s2);
+    }
+};
+
+Comparator&lt;String&gt; c2 = (String s1, String s2) -&gt; {
+    return s1.compareToIgnoreCase(s2);
+};</code></pre></div></div></section><section id="_simplification_1"><h2>Simplification 1</h2><div class="paragraph"><p>Le type peut être omis</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Comparator&lt;String&gt; c = (s1, s2) -&gt; {
+    return s1.compareToIgnoreCase(s2);
+};</code></pre></div></div></section><section id="_simplification_2"><h2>Simplification 2</h2><div class="paragraph"><p>Si le bloc est une simple expression :</p></div>
+<div class="ulist"><ul><li><p>Suppression du bloc</p></li><li><p>Omission du mot-clé <code>return</code></p></li><li><p>Omission du <code>;</code> final</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Comparator&lt;String&gt; c = (s1, s2) -&gt; s1.compareToIgnoreCase(s2);</code></pre></div></div></section><section id="_simplification_3_rfrence_de_mthode"><h2>Simplification 3 : Référence de méthode</h2><div class="paragraph"><p>Quand une expression appelle une méthode existante :</p></div>
+<div class="ulist"><ul><li><p>Forme abrégée <code>&lt;Type&gt;</code> + <code>::</code> + <code>&lt;méthode&gt;</code></p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Comparator&lt;String&gt; c = String::compareToIgnoreCase;</code></pre></div></div></section><section id="_simplification_4"><h2>Simplification 4</h2><div class="paragraph"><p>Si il n&#8217;y a qu&#8217;un unique argument :</p></div>
+<div class="ulist"><ul><li><p>Suppression des parenthèses</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Function&lt;Integer,Integer&gt; f = i -&gt; i + 1;</code></pre></div></div></section></section>
+<section><section id="_cas_d_utilisation_de_em_streams_em"><h2>Cas d&#8217;utilisation de <em>streams</em></h2><div class="ulist"><ul><li><p>Soit une liste de <code>Person</code></p></li><li><p>Calculer la moyenne de l&#8217;âge des personnes</p></li></ul></div></section><section id="_implmentation_basique"><h2>Implémentation basique</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">List&lt;Person&gt; persons = ...
+
+double sum = 0.0;
+for (Person person: persons) {
+    sum += person.getAge();
+}
+
+double average = sum / persons.size();</code></pre></div></div></section><section id="_problme"><h2>Problème</h2><div class="paragraph"><p>Beaucoup de <em>boilerplate</em> code</p></div>
+<div class="ulist"><ul><li><p>Focus sur le <strong>comment</strong>, pas sur le <strong>quoi</strong></p></li><li><p>A l&#8217;inverse du tri, <code>sort()</code></p></li></ul></div></section><section id="_autres_cas_d_utilisation"><h2>Autres cas d&#8217;utilisation</h2><div class="ulist"><ul><li><p>Capitaliser les noms de famille</p></li><li><p>Conserver uniquement les adultes</p></li><li><p>Combinaison de cas d&#8217;utilisation</p></li><li><p>etc.</p></li></ul></div></section><section id="_em_stream_em"><h2><em>Stream</em></h2><div class="paragraph"><p>Un <em>stream</em> est un pipeline de fonctions.</p></div></section><section id="_em_stream_em_en_java_8"><h2><em>Stream</em> en Java 8</h2><div class="ulist"><ul><li><p><em>Stream</em> de départ</p></li><li><p>Opérations intermédiaires &#8594; *</p></li><li><p>Opérations terminales &#8594; 1</p></li><li><p>Peut-être infini</p></li></ul></div></section><section id="_opration_intermdiaire"><h2>Opération intermédiaire</h2><div class="ulist"><ul><li><p>Retourne un <em>stream</em></p></li><li><p><em>Lazily executed</em> (à la demande)</p></li></ul></div></section><section id="_opration_terminale"><h2>Opération terminale</h2><div class="ulist"><ul><li><p>Retourne un type concret</p><div class="ulist"><ul><li><p>Ou produit des effets de bord</p></li></ul></div></li><li><p><em>Eagerly executed</em> (lors de l&#8217;appel)</p></li><li><p>Démarre le pipeline</p></li></ul></div></section></section>
+<section><section id="_oprations_intermdiaires"><h2>Opérations intermédiaires</h2><div class="ulist"><ul><li><p><code>map()</code></p></li><li><p><code>filter()</code></p></li><li><p><code>limit()</code></p></li><li><p><code>skip()</code></p></li><li><p><code>distinct()</code></p></li><li><p><code>sorted()</code></p></li></ul></div></section><section id="_map"><h2>Map</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> de types T en un autre <em>stream</em> de types R</p></li><li><p>Via une instance de <code>Function&lt;T, R&gt;</code></p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .map(new Function&lt;Person,String&gt;() {
+        @Override
+        public String apply(Person person) {
+            return person.getFirstName();
+        }
+    })
+    .map(new Function&lt;String,String&gt;() {
+        @Override
+        public String apply(String name) {
+            return name.toUpperCase();
+        }
+    });</code></pre></div></div></section><section id="_utilisation_de_lambdas"><h2>Utilisation de lambdas</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .map(person -&gt; person.getFirstName())
+    .map(name -&gt; name.toUpperCase());</code></pre></div></div></section><section id="_utilisation_de_rfrences"><h2>Utilisation de références</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .map(Person::getFirstName)
+    .map(String::toUpperCase);</code></pre></div></div></section><section id="_filter"><h2>Filter</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> de taille x en un autre <em>stream</em> de taille y &lt; x</p></li><li><p>Via une instance de <code>Predicate</code></p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .filter(person -&gt; person.getAge() &gt;= 18);</code></pre></div></div></section><section id="_limit"><h2>Limit</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> de taille x en un autre <em>stream</em> de taille y &lt; x</p></li><li><p>En conservant les n premiers éléments</p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .limit(15);</code></pre></div></div></section><section id="_skip"><h2>Skip</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> de taille x en un autre <em>stream</em> de taille y &lt; x</p></li><li><p>En omettant les n premiers éléments</p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .skip(15);</code></pre></div></div></section><section id="_distinct"><h2>Distinct</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> de taille x en un autre <em>stream</em> de taille y &lt; x</p></li><li><p>En omettant les doublons</p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .distinct();</code></pre></div></div></section><section id="_sorted"><h2>Sorted</h2><div class="ulist"><ul><li><p>Transforme un <em>stream</em> d&#8217;éléments en un <em>stream</em> d&#8217;éléments ordonnés</p></li><li><p>Via une instance de <code>Comparator&lt;T&gt;</code></p><div class="ulist"><ul><li><p>Ou selon l&#8217;ordre naturel des éléments</p></li></ul></div></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">persons
+    .stream()
+    .sorted((p1, p2) -&gt; p1.getAge() - p2.getAge());
+
+persons
+    .stream()
+    .sorted(Comparator.comparingInt(Person::getAge));</code></pre></div></div></section></section>
+<section><section id="_oprations_finales"><h2>Opérations finales</h2><div class="ulist"><ul><li><p><code>collect()</code></p></li><li><p><code>forEach()</code></p></li><li><p><code>reduce()</code></p></li></ul></div></section><section id="_collect"><h2>Collect</h2><div class="ulist"><ul><li><p>Regroupe les éléments d&#8217;un <em>stream</em> dans une collection concrète</p></li><li><p>Via une instance de <code>Collector&lt;T, A, R&gt;</code></p></li></ul></div></section><section id="_collector"><h2>Collector</h2><div class="imageblock" style=""><img src="./images/streams/collector.svg" alt="collector"></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">stream.collect(Collectors.toList());
+stream.collect(Collectors.toSet());
+stream.collect(Collectors.toMap(
+    person -&gt; person.getId(),
+    person -&gt; person));
+stream.collect(Collectors.toMap(
+    Person::getId,
+    Function.identity()));</code></pre></div></div></section><section id="_for_each"><h2>For each</h2><div class="ulist"><ul><li><p>Invoque des effets de bord sur les éléments d&#8217;un <em>stream</em></p></li><li><p>Via une instance de <code>Consumer&lt;T&gt;</code></p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">stream.forEach(person -&gt; {
+    System.out.println(person);
+});
+stream.forEach(System.out::println);</code></pre></div></div></section><section id="_reduce"><h2>Reduce</h2><div class="ulist"><ul><li><p>Aggrège les éléments d&#8217;un <em>stream</em> dans un élément unique</p></li><li><p>Via une instance de <code>BinaryOperator&lt;T&gt;</code></p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">stream.mapToInt(Person::getAge).average();</code></pre></div></div></section></section>
+<section><section id="_cration_de_em_streams_em"><h2>Création de <em>streams</em></h2><div class="ulist"><ul><li><p>Depuis une collection existante</p></li><li><p>Depuis un tableau existant</p></li><li><p>Depuis des éléments</p></li><li><p>Depuis une fonction</p></li></ul></div></section><section><div class="imageblock" style=""><img src="./images/streams/stream.svg" alt="stream"></div></section><section id="_depuis_une_collection_existante"><h2>Depuis une collection existante</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">List&lt;Person&gt; persons = ...
+Stream&lt;Person&gt; stream = persons.stream();</code></pre></div></div></section><section id="_depuis_un_tableau_existant"><h2>Depuis un tableau existant</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Person[] persons = ...
+Stream&lt;Person&gt; stream = Arrays.stream(persons);</code></pre></div></div></section><section id="_depuis_des_lments"><h2>Depuis des éléments</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Stream&lt;String&gt; stream = Stream.of("one", "two", "three");</code></pre></div></div></section><section id="_depuis_une_fonction"><h2>Depuis une fonction</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Stream&lt;String&gt; stream = Stream.generate(() -&gt; "X");
+Stream&lt;Integer&gt; stream = Stream.iterate(0, i -&gt; i + 1);</code></pre></div></div></section></section>
+<section><section id="_fonctionnalits_supplmentaires"><h2>Fonctionnalités supplémentaires</h2><div class="imageblock" style=""><img src="./images/streams/stream-more.svg" alt="stream more"></div></section><section id="_match"><h2>Match</h2><div class="dlist"><dl><dt class="hdlist1">all</dt><dd><p>Tous les éléments du <em>stream</em> vérifient le prédicat</p></dd><dt class="hdlist1">none</dt><dd><p>Aucun élément du <em>stream</em> ne vérifie le prédicat</p></dd><dt class="hdlist1">any</dt><dd><p>Au moins 1 élément du <em>stream</em> vérifie le prédicat</p></dd></dl></div></section><section id="_find"><h2>Find</h2><div class="dlist"><dl><dt class="hdlist1">any</dt><dd><p>Renvoie un élément quelconque du <em>stream</em></p></dd><dt class="hdlist1">first</dt><dd><p>Renvoie le premier élément du <em>stream</em> (s&#8217;il est ordonné)</p></dd></dl></div></section><section id="_peek"><h2>Peek</h2><div class="ulist"><ul><li><p>Permet d&#8217;accéder aux élément du <em>stream</em> sans le modifier</p></li><li><p>Exemple : log l&#8217;élément</p></li></ul></div></section><section id="_flat_map"><h2>Flat map</h2><div class="paragraph"><p>Assemble les éléments de n collections dans un <em>stream</em> unique</p></div></section><section id="_exemple"><h2>Exemple</h2><div class="imageblock" style=""><img src="./images/streams/order-product.svg" alt="order product"></div>
+<div class="paragraph"><p>Comment récupérer tous les produits commandés ?</p></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Stream&lt;List&lt;Product&gt;&gt; streamOfList = orders
+    .stream()
+    .map(Order::getProducts);
+
+Stream&lt;Product&gt; streamOfProducts = orders
+    .stream()
+    .flatMap(order -&gt; order.getProducts().stream());</code></pre></div></div></section></section>
+<section><section id="_divers"><h2>Divers</h2></section><section id="_stream_de_types_primitifs"><h2>Stream de types primitifs</h2><div class="ulist"><ul><li><p><code>IntStream</code></p></li><li><p><code>DoubleStream</code></p></li><li><p><code>LongStream</code></p></li></ul></div></section><section id="_spcificits"><h2>Spécificités</h2><div class="imageblock" style=""><img src="./images/streams/primitive-stream.svg" alt="primitive stream"></div></section><section id="_optional"><h2>Optional</h2><div class="imageblock" style=""><img src="./images/streams/optional.svg" alt="optional"></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Order order = repository.load(1L);
+
+if (order != null) {
+    // Do something with person
+}
+
+Optional&lt;Order&gt; optional = repository.load(1L);
+
+optional.ifPresent(order -&gt; {
+    // Do something with person
+});</code></pre></div></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Order order = repository.load(1L);
+
+if (order == null) {
+    order = new Order();
+}
+
+Optional&lt;Order&gt; optional = repository.load(1L);
+Order order = optional.getOrElse(new Order());</code></pre></div></div></section></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

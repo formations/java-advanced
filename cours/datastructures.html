@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Structures de données en Java</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/white.css" id="theme"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides"><section class="title"><h1>Structures de données en Java</h1></section><section><section id="_structure_de_donnes"><h2>Structure de données</h2><div class="quoteblock"><blockquote>A data structure is a particular way of organizing data in a computer so that it can be used efficiently</blockquote><div class="attribution"><cite>https://en.wikipedia.org/wiki/Data_structure</cite><br>&#8212; Wikipedia</div></div></section><section id="_quelques_structures_de_donnes_java"><h2>Quelques structures de données Java</h2><div class="ulist"><ul><li><p>Tableau</p></li><li><p>Liste</p></li><li><p>Set</p></li><li><p>Dictionnaire</p></li></ul></div></section></section>
+<section><section id="_tableau"><h2>Tableau</h2><div class="ulist"><ul><li><p>Taille fixe</p></li><li><p>Eléments stockés de manière continue en mémoire</p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int[] a0;
+int[] a1 = new int[2];
+int[] a2 = { 1, 2, 3 };
+int a3[] = { 1, 2, 3 };
+Object[] a4 = { new Object(), Boolean.TRUE, 1 };
+int[][] a5 = new int[3][3];</code></pre></div></div></section><section id="_accs"><h2>Accès</h2><div class="ulist"><ul><li><p>Accès à un élément par son index</p><div class="ulist"><ul><li><p>Opérateur <code>[]</code></p></li><li><p><code>ArrayIndexOutOfBoundsException</code> si l&#8217;index n&#8217;existe pas</p></li></ul></div></li><li><p>Accès à la taille</p><div class="ulist"><ul><li><p>Attribut <code>length</code></p></li></ul></div></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int[] a = { 1, 2, 3 };
+int first = a[0];
+int size = a.length;
+
+int[] b = new int[3];
+b[0] = 1;
+b[2] = 3;</code></pre></div></div></section><section id="_java_util_arrays"><h2>java.util.Arrays</h2><div class="ulist"><ul><li><p>Recherche d&#8217;élément</p></li><li><p>Test d&#8217;égalité</p></li><li><p>Tri</p></li><li><p>Remplissage</p></li><li><p>Copie</p></li><li><p>etc.</p></li></ul></div></section></section>
+<section><section id="_liste"><h2>Liste</h2><div class="paragraph"><p>Collection <u>ordonnée</u> d&#8217;éléments</p></div></section><section><div class="imageblock stretch" style=""><img src="./images/datastructures/list.svg" alt="list" height="100%"></div></section></section>
+<section><section id="_iterator"><h2>Iterator</h2><div class="ulist"><ul><li><p>Permet le parcours séquentiel des éléments d&#8217;une collection</p></li><li><p>Concept similaire à celui de curseur</p></li></ul></div></section><section><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">List list = Arrays.asList("apple", "orange", "pear");
+Iterator iterator = list.iterator();
+while (iterator.hasNext()) {
+    Object o = iterator.next();
+    String s = (String) o;
+    // Do something with s
+}</code></pre></div></div></section><section id="_for_each"><h2>For-each</h2><div class="ulist"><ul><li><p>Pour les classes qui implémentent <code>Iterable</code></p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">List list = Arrays.asList("apple", "orange", "pear");
+for (Object o : list) {
+    String s = (String) o;
+    // Do something with s
+}</code></pre></div></div></section></section>
+<section><section id="_implmentations_de_list"><h2>Implémentations de List</h2><div class="imageblock stretch" style=""><img src="./images/datastructures/arraylinkedlist.svg" alt="arraylinkedlist" height="100%"></div></section><section id="_implmentations_de_list_2"><h2>Implémentations de List</h2><div class="dlist"><dl><dt class="hdlist1">ArrayList</dt><dd><p>Basée sur un tableau</p></dd><dt class="hdlist1">LinkedList</dt><dd><p>Basée sur des noeuds liés parcourables dans les deux sens</p></dd></dl></div></section><section id="_liste_doublement_chane"><h2>Liste doublement chaînée</h2><div class="imageblock" style=""><img src="./images/datastructures/linked-list.jpg" alt="Liste doublement chaînée" width="900"></div></section><section id="_ajout_d_un_lment_en_fin_de_liste"><h2>Ajout d&#8217;un élément en fin de liste</h2><div class="imageblock" style=""><img src="./images/datastructures/linked-list-add-end.jpg" alt="Ajout d'un élément en fin de liste" width="900"></div></section><section id="_ajout_d_lment"><h2>Ajout d&#8217;élément</h2><div class="imageblock" style=""><img src="./images/datastructures/linked-list-add-anywhere.jpg" alt="Ajout d'élément" width="900"></div></section><section id="_complexit_algorithmique"><h2>Complexité algorithmique</h2><div class="quoteblock"><blockquote>La théorie de la complexité est un domaine des mathématiques qui étudie formellement la quantité de ressources (temps et/ou espace mémoire) nécessaire pour résoudre un problème algorithmique au moyen de l&#8217;exécution d&#8217;un algorithme.</blockquote><div class="attribution"><cite>http://bit.ly/2wdY0fF</cite><br>&#8212; Wikipedia</div></div></section><section><div class="imageblock stretch" style=""><img src="./images/datastructures/data-structure-complexity.png" alt="Complexité algorithmique des opérations sur les structures de données" width="1054" height="862"></div>
+<div class="paragraph"><p><a href="http://bigocheatsheet.com/#data-structures" class="bare">http://bigocheatsheet.com/#data-structures</a></p></div></section><section id="_liste_base_sur_un_tableau"><h2>Liste basée sur un tableau</h2><div class="imageblock" style=""><img src="./images/datastructures/array-list.png" alt="Liste basée sur un tableau" width="900"></div></section><section id="_ajout_d_un_lment_en_fin_de_liste_2"><h2>Ajout d&#8217;un élément en fin de liste</h2><div class="imageblock" style=""><img src="./images/datastructures/array-list-add-end.png" alt="Ajout d'un élément en fin de liste" width="900"></div></section><section id="_ajout_d_lment_2"><h2>Ajout d&#8217;élément</h2><div class="imageblock" style=""><img src="./images/datastructures/array-list-add-anywhere.jpg" alt="Ajout d'élément" width="900"></div></section></section>
+<section><section id="_tri"><h2>Tri</h2><div class="quoteblock"><blockquote>A sorting algorithm is an algorithm that puts elements of a list in a certain order.</blockquote><div class="attribution"><cite>https://en.wikipedia.org/wiki/Sorting_algorithm</cite><br>&#8212; Wikipedia</div></div></section><section id="_ordre"><h2>Ordre</h2><div class="ulist"><ul><li><p>Ordre "naturel" des éléments</p></li><li><p>Ordre explicite</p></li></ul></div></section><section><div class="imageblock" style=""><img src="./images/datastructures/ordering.svg" alt="ordering"></div></section><section id="_quel_algorithme_de_tri"><h2>Quel algorithme de tri ?</h2><div class="ulist"><ul><li><p>Dépend du JRE</p></li><li><p><a href="https://en.wikipedia.org/wiki/Timsort" target="_blank">Tim Sort</a></p></li></ul></div></section><section><div class="imageblock stretch" style=""><img src="./images/datastructures/sort-complexity.png" alt="Complexité algorithmique des algorithmes de tri" width="1128" height="760"></div>
+<div class="paragraph"><p><a href="http://bigocheatsheet.com/#sorting" class="bare">http://bigocheatsheet.com/#sorting</a></p></div></section><section id="_comparable"><h2>Comparable</h2><div class="paragraph"><p>Compare l&#8217;objet courant <code>this</code> avec un autre objet <code>that</code> et retourne :</p></div>
+<div class="ulist"><ul><li><p>Un entier négatif si <code>this &lt; that</code></p></li><li><p>Un entier positif si <code>this &gt; that</code></p></li><li><p><code>0</code> si <code>this = that</code></p></li></ul></div></section><section id="_classes_comparables"><h2>Classes comparables</h2><div class="ulist"><ul><li><p><code>String</code></p></li><li><p><code>Number</code> (<code>Integer</code>, <code>Float</code>, etc.)</p></li><li><p><code>Date</code></p></li><li><p><code>File</code></p></li><li><p>etc.</p></li></ul></div></section><section id="_comparateur"><h2>Comparateur</h2><div class="paragraph"><p>Compare deux arguments <code>x</code> et <code>y</code> et retourne :</p></div>
+<div class="ulist"><ul><li><p>Un entier négatif si <code>x &lt; y</code></p></li><li><p>Un entier positif si <code>x &gt; y</code></p></li><li><p><code>0</code> si <code>x = y</code></p></li></ul></div></section><section id="_comparateur_d_entiers"><h2>Comparateur d&#8217;entiers</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class IntegerComparator implements Comparator {
+
+  @Override
+  public int compare(Object x, Object y) {
+    if (!(x instanceof Integer)) {
+      throw new IllegalArgumentException("x must be an int");
+    }
+    if (!(y instanceof Integer)) {
+      throw new IllegalArgumentException("y must be an int");
+    }
+    int xInt = (Integer) x;
+    int yInt = (Integer) y;
+    return xInt - yInt;
+  }
+}</code></pre></div></div></section></section>
+<section><section id="_set"><h2>Set</h2><div class="paragraph"><p>Collection <u>dé-doublonnée</u> d&#8217;éléments</p></div></section><section><div class="imageblock stretch" style=""><img src="./images/datastructures/set.svg" alt="set" height="100%"></div></section><section id="_exemple"><h2>Exemple</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Collection collection = Arrays.asList("One", "One", "Two");
+Set set = new HashSet(collection);
+System.out.println(set.size());</code></pre></div></div></section><section id="_un_autre_exemple"><h2>Un autre exemple</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Wrapper {
+
+    private final int id;
+
+    public Wrapper(int id) {
+        this.id = id;
+    }
+}
+
+Collection collection = Arrays.asList(new Wrapper(1),
+                                      new Wrapper(1),
+                                      new Wrapper(2));
+Set set = new HashSet(collection);
+System.out.println(set.size());</code></pre></div></div></section><section id="_dfinition_de_doublon"><h2>Définition de doublon</h2><div class="paragraph"><p>Deux objets <code>a</code> et <code>b</code> sont considérés des doublons si <code>a.equals(b)</code></p></div></section><section id="_mthode_a_href_https_docs_oracle_com_javase_8_docs_api_java_lang_object_html_equals_java_lang_object_target_blank_equals_a"><h2>Méthode <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals(java.lang.Object)" target="_blank">equals</a></h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:20%"><col style="width:80%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Reflexive</p></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>∀ x != null,<br>
+                   <code>x.equals(x) == true</code></p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"> Symmetric</p></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>∀ x, y != null,<br>
+                   <code>x.equals(y) == true ⇔ y.equals(x) == true</code></p></div></div></td></tr></tbody></table></section><section><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:20%"><col style="width:80%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Transitive</p></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>∀ x, y, z != null,<br>
+                   <code>x.equals(y) == true AND y.equals(z) == true ⇒ x.equals(z) == true</code></p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Consistent</p></td><td class="tableblock halign-left valign-top"></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>∀ x != null,<br>
+                   <code>x.equals(null) == false</code></p></div></div></td></tr></tbody></table></section><section id="_application"><h2>Application</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Object a = new Object();
+Object b = new Object();
+System.out.println(a == a);
+System.out.println(a == b);
+System.out.println(a.equals(a));
+System.out.println(a.equals(b));</code></pre></div></div></section><section id="_cas_particulier_des_string"><h2>Cas particulier des String</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">String one1 = "One";
+String one2 = "One";
+String two = "Two";
+System.out.println(one1 == one1);
+System.out.println(one1 == one2);
+System.out.println(one1 == two);
+System.out.println(one1.equals(one1));
+System.out.println(one1.equals(one2));
+System.out.println(one1.equals(two));</code></pre></div></div></section><section id="_implmentation_d_equals"><h2>Implémentation d&#8217;equals()</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Wrapper { // Attribute &amp; constructor
+
+ @Override
+ public boolean equals(Object o) {
+  return o instanceof Wrapper &amp;&amp; this.id == ((Wrapper) o).id;
+ }
+}
+
+Wrapper w1 = new Wrapper(1);
+Wrapper w11 = new Wrapper(1);
+Wrapper w2 = new Wrapper(2);
+System.out.println(w1.equals(w1));
+System.out.println(w1.equals(w11));
+System.out.println(w1.equals(w2));</code></pre></div></div></section><section id="_et_avec_le_set"><h2>Et avec le set ?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Collection collection = Arrays.asList(new Wrapper(1),
+                                      new Wrapper(1),
+                                      new Wrapper(2));
+Set set = new HashSet(collection);
+System.out.println(set.size());</code></pre></div></div></section><section id="_mthode_a_href_https_docs_oracle_com_javase_7_docs_api_java_lang_object_html_hashcode_target_blank_hashcode_a"><h2>Méthode <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#hashCode()" target="_blank">hashCode()</a></h2><div class="ulist"><ul><li><p>Consistent (<em>during the same run of the JVM</em>)</p></li><li><p><code>a.equals(b)</code> ⇒<br>
+<code>a.hashCode() == b.hashCode()</code></p></li></ul></div></section><section id="_implmentation_d_hashcode"><h2>Implémentation d&#8217;hashCode()</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Wrapper { // Attribute &amp; constructor
+
+ @Override public int hashCode() { return this.id; }
+
+ @Override
+ public boolean equals(Object o) {
+  return o instanceof Wrapper &amp;&amp; this.id == ((Wrapper) o).id;
+ }
+}
+
+Collection coll = Arrays.asList(
+    new Wrapper(1), new Wrapper(1), new Wrapper(2));
+Set set = new HashSet(coll);
+System.out.println(set.size());</code></pre></div></div></section></section>
+<section><section id="_dictionnaire"><h2>Dictionnaire</h2><div class="quoteblock"><blockquote>Un dictionnaire est une structure de données associant à un ensemble de clefs un ensemble correspondant de valeurs. Chaque clef est associée à une valeur.</blockquote><div class="attribution">&#8212; https://fr.wikipedia.org/wiki/Tableau_associatif</div></div></section><section><div class="imageblock" style=""><img src="./images/datastructures/map.png" alt="map"></div></section><section><div class="imageblock stretch" style=""><img src="./images/datastructures/map.svg" alt="map" height="100%"></div></section><section id="_hash_map"><h2>Hash Map</h2><div class="imageblock stretch" style=""><img src="./images/datastructures/hashmap-internal.png" alt="hashmap internal" height="100%"></div>
+<div class="paragraph"><p>Capacité initiale &amp; facteur de chargement</p></div></section></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

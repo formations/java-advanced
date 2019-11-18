@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Nicolas Frankel">
+<title>Travaux pratiques - Structures de données</title>
+<link rel="stylesheet" href="./../asciidoctor.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>Travaux pratiques - Structures de données</h1>
+<div class="details">
+<span id="author" class="author">Nicolas Frankel</span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image left"><a class="image" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Licence Creative Commons"></a></span></p>
+</div>
+<div class="paragraph">
+<p>Ce document est mis à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table des matières</div>
+<ul class="sectlevel1">
+<li><a href="#_références">1. Références</a></li>
+<li><a href="#_mise_en_place">2. Mise en place</a></li>
+<li><a href="#_manipulation_de_tableaux">3. Manipulation de tableaux</a></li>
+<li><a href="#_manipulation_de_listes">4. Manipulation de listes</a>
+<ul class="sectlevel2">
+<li><a href="#_itération">4.1. Itération</a></li>
+<li><a href="#_comparateurs">4.2. Comparateurs</a></li>
+<li><a href="#_tri_par_ordre_naturel_système_de_fichiers">4.3. Tri par ordre naturel - système de fichiers</a></li>
+</ul>
+</li>
+<li><a href="#_manipulation_de_sets">5. Manipulation de sets</a></li>
+<li><a href="#_manipulation_de_dictionnaires">6. Manipulation de dictionnaires</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_références"><a class="anchor" href="#_références"></a>1. Références</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">En anglais : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/index.html?java/util/package-summary.html" target="_blank" rel="noopener">API</a></p>
+</li>
+<li>
+<p><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/collections/overview.html" target="_blank" rel="noopener">Collections Framework Overview</a></p>
+</li>
+<li>
+<p><a href="http://docs.oracle.com/javase/tutorial/collections/index.html" target="_blank" rel="noopener">The Java™ Tutorials: Trail: Collections</a></p>
+</li>
+<li>
+<p><a href="http://files.zeroturnaround.com/pdf/zt_java_collections_cheat_sheet.pdf">Java Collections Cheat Sheet</a></p>
+</li>
+<li>
+<p><a href="http://bigocheatsheet.com/" target="_blank" rel="noopener">Know Thy Complexities!</a></p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">En français : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.jmdoudoux.fr/java/dej/chap-collections.htm" target="_blank" rel="noopener">Les Collections</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mise_en_place"><a class="anchor" href="#_mise_en_place"></a>2. Mise en place</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Se référer au paragraphe <a href="https://formations.github.io/javaee/tp/servlet.html#_mise_en_place" target="_blank" rel="noopener">Mise en place</a> du cours Java EE.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulation_de_tableaux"><a class="anchor" href="#_manipulation_de_tableaux"></a>3. Manipulation de tableaux</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Implémenter une méthode qui accepte deux paramètres <code>m</code> et <code>n</code> de type <code>int</code> et qui crée une matrice de dimensions <code>m</code> x <code>n</code>.
+La valeur de la cellule de coordonnées <code>[i][j]</code> est <code>i + j</code>.</p>
+</div>
+<div class="paragraph">
+<p>Par exmple, voici le tableau résultat de la méthode avec les paramètres <code>4</code> et <code>3</code> :</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"> </th>
+<th class="tableblock halign-left valign-top">i = 0</th>
+<th class="tableblock halign-left valign-top">i = 1</th>
+<th class="tableblock halign-left valign-top">i = 2</th>
+<th class="tableblock halign-left valign-top">i = 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">j = 0</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"> 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"> 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">j = 1</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 </p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">j = 2</p></th>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"> 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulation_de_listes"><a class="anchor" href="#_manipulation_de_listes"></a>4. Manipulation de listes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_itération"><a class="anchor" href="#_itération"></a>4.1. Itération</h3>
+<div class="sect3">
+<h4 id="_somme"><a class="anchor" href="#_somme"></a>4.1.1. Somme</h4>
+<div class="paragraph">
+<p>Soit une liste d&#8217;entiers.
+Implémenter une méthode <code>sum()</code> qui retourne la somme des éléments de la liste.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groupement"><a class="anchor" href="#_groupement"></a>4.1.2. Groupement</h4>
+<div class="paragraph">
+<p>Implémenter une méthode <code>group()</code> qui retourne les éléments d&#8217;une liste groupés par type.
+Le groupement se fait selon les règles suivantes :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Le premier groupe comprend les chaînes de caractères,</p>
+</li>
+<li>
+<p>Le deuxième groupe les éléments de type <code>Integer</code>,</p>
+</li>
+<li>
+<p>La troisième tous les autres.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Chaque groupe est géré par un type <code>Collection</code>.</p>
+</div>
+<div class="paragraph">
+<p>Par exemple, avec la liste de la section suivante, le résultat doit être une <code>Collection</code> qui comprend :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>["banana", "apple", "orange"]</code></p>
+</li>
+<li>
+<p><code>[2, 1, 3]</code></p>
+</li>
+<li>
+<p><code>[null, java.lang.Object@cafebabe, Tue Aug 22 15:18:21 CEST 2017]]</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comparateurs"><a class="anchor" href="#_comparateurs"></a>4.2. Comparateurs</h3>
+<div class="paragraph">
+<p>Voici un échantillon de code qui pourra être utilisé comme test dans les exercices de cette section :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List list = Arrays.asList(2, 1, "banana", null, "apple", "orange",
+                          3, new Object(), new java.util.Date());</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tri_avec_un_comparateur"><a class="anchor" href="#_tri_avec_un_comparateur"></a>4.2.1. Tri avec un comparateur</h4>
+<div class="paragraph">
+<p>Implémenter une méthode <code>sortWithSetComparator()</code> qui trie une liste avec un comparateur explicite en utilisant l&#8217;ordre suivant :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Les entiers, puis dans l&#8217;ordre naturel des entiers,</p>
+</li>
+<li>
+<p>Les chaînes de caractères, puis dans l&#8217;ordre naturel des chaînes de caractères,</p>
+</li>
+<li>
+<p>Les éléments qui <strong>ne sont pas</strong> de type <code>Object</code>,</p>
+</li>
+<li>
+<p>Les éléments de type <code>Object</code>,</p>
+</li>
+<li>
+<p>Enfin, les valeurs <code>null</code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Avec la liste échantillon, le résultat doit être le suivant :</p>
+</div>
+<div class="paragraph">
+<p><code>[1, 2, 3, "apple", "banana", "orange", Tue Aug 22 15:18:21 CEST 2017, java.lang.Object@cafebabe, null]</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_chaînage_de_comparateurs"><a class="anchor" href="#_chaînage_de_comparateurs"></a>4.2.2. Chaînage de comparateurs</h4>
+<div class="paragraph">
+<p>Soit le code suivant :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Person {
+    private final String firstName;
+    private final String lastName;
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    // Getters and setters
+}
+
+public class ByFirstNameComparator implements Comparator { ... }
+
+public class ByLastNameComparator implements Comparator { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En réutilisant les classes existantes, créer une implémentation de comparateur <code>ByLastNameThenFirstNameComparator</code> qui compare deux instances de <code>Person</code> :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Par leur attribut <code>lastName</code>,</p>
+</li>
+<li>
+<p>Puis en cas d&#8217;égalité par leur attribut <code>firstName</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tri_par_ordre_naturel"><a class="anchor" href="#_tri_par_ordre_naturel"></a>4.2.3. Tri par ordre naturel</h4>
+<div class="paragraph">
+<p>Implémenter une méthode <code>sortWithNaturalOrder()</code> qui trie la liste passée en paramètre dans l&#8217;ordre naturel des éléments.
+Tester avec la liste échantillon.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Quel est le résultat obtenu ?</p>
+</li>
+<li>
+<p>Expliquer la raison.</p>
+</li>
+<li>
+<p>Proposer une solution pour corriger le problème.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tri_par_ordre_naturel_système_de_fichiers"><a class="anchor" href="#_tri_par_ordre_naturel_système_de_fichiers"></a>4.3. Tri par ordre naturel - système de fichiers</h3>
+<div class="paragraph">
+<p>Implémenter une méthode <code>listDirectory()</code> qui accepte en paramètre le chemin vers un répertoire et retourne la liste triée des enfants de ce répertoire.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Appeler la méthode en passant un répertoire avec un nombre conséquent d&#8217;enfants.</p>
+</li>
+<li>
+<p>Constater l&#8217;orde utilisé.</p>
+</li>
+<li>
+<p>Chercher la confirmation à l&#8217;aide de la JavaDoc.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulation_de_sets"><a class="anchor" href="#_manipulation_de_sets"></a>5. Manipulation de sets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Soit la classe <code>Person</code> suivante :</p>
+</div>
+<div class="listingblock">
+<div class="title">Person.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Person {
+    private final String name;
+    private final String avs;
+    public Person(String name, String avs) {
+        this.name = name;
+        this.avs = avs;
+    }
+
+    public static void main(String... args) {
+        Person p1 = new Person("John Doe", "756-1234-5678-97");
+        Person p2 = new Person("John Doe", "756-1234-5678-97");
+        Person p3 = new Person("John Amden", "111-11-111-113");
+        Set persons = new HashSet();
+        persons.add(p1);
+        persons.add(p2);
+        persons.add(p3);
+        System.out.println(persons.size());           <b class="conum">(1)</b>
+        System.out.println(p1.equals(p2));            <b class="conum">(2)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En surchargeant uniquement les méthodes adéquates dans la classe <code>Person</code>, faire en sorte que le résultat de l&#8217;exécution du code précédent soit :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>2    <b class="conum">(1)</b>
+true <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manipulation_de_dictionnaires"><a class="anchor" href="#_manipulation_de_dictionnaires"></a>6. Manipulation de dictionnaires</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Soit le code suivant :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Wrapper {
+    private final int id;
+    public Wrapper(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Wrapper &amp;&amp; this.id == ((Wrapper) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;                              <b class="conum">(1)</b>
+    }
+
+    public static void main(String... args) {
+        Map map = new HashMap();               <b class="conum">(2)</b>
+        int limit = 10_000_000;                <b class="conum">(3)</b>
+        for (int i = 0; i &lt; limit; i++) {
+        Wrapper w = new Wrapper(i);
+        map.put(w, w);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Expliquer le problème posé par le code. Le corriger.</p>
+</li>
+<li>
+<p>Quels sont le(s) paramètre(s) à passer dans le constructeur de la <code>HashMap</code> pour optimiser le temps d&#8217;exécution du code ? Justifier.</p>
+</li>
+<li>
+<p>En quoi la réponse à la question précédent diffère si la valeur de la variable <code>limit</code> n&#8217;est pas connue ?</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-11-18 12:41:09 UTC
+</div>
+</div>
+</body>
+</html>

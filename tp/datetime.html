@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Nicolas Frankel">
+<title>Travaux pratiques - Modélisation du temps</title>
+<link rel="stylesheet" href="./../asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>Travaux pratiques - Modélisation du temps</h1>
+<div class="details">
+<span id="author" class="author">Nicolas Frankel</span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image left"><a class="image" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Licence Creative Commons"></a></span></p>
+</div>
+<div class="paragraph">
+<p>Ce document est mis à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table des matières</div>
+<ul class="sectlevel1">
+<li><a href="#_références">1. Références</a></li>
+<li><a href="#_tour_de_chauffe">2. Tour de chauffe</a></li>
+<li><a href="#_aller_plus_loin">3. Aller plus loin</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_références"><a class="anchor" href="#_références"></a>1. Références</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">En français : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../cours/datetime.html">Slides</a></p>
+</li>
+<li>
+<p><a href="https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013706-decouvrez-la-nouvelle-api-de-gestion-des-dates-de-java-8" target="_blank" rel="noopener">Découvrez la nouvelle API de gestion des dates de Java 8</a></p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">En anglais : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html" target="_blank" rel="noopener">Package java.time</a></p>
+</li>
+<li>
+<p><a href="https://www.baeldung.com/java-8-date-time-intro" target="_blank" rel="noopener">Introduction to the Java 8 Date/Time API</a></p>
+</li>
+<li>
+<p><a href="https://www.foreach.be/blog/java-8-date-and-time" target="_blank" rel="noopener">Migrating from java.util.Date to the new API&#8217;s</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tour_de_chauffe"><a class="anchor" href="#_tour_de_chauffe"></a>2. Tour de chauffe</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Afficher la date du jour dans la sortie standard</dt>
+<dd>
+<p>Rester simple, pas besoin d&#8217;utiliser de formateur</p>
+</dd>
+<dt class="hdlist1">Déterminer quel est le jour de la semaine du 1er janvier 1905</dt>
+<dt class="hdlist1">Compter le nombre de jours ouvrés entre le 1er janvier 2020 et le 1er juin 2020</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Un jour est considéré comme ouvré s&#8217;il n&#8217;est ni un samedi, ni un dimanche</p>
+</li>
+<li>
+<p>Ne pas utiliser la classe <code>TemporalAdjusters</code></p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Compter le nombre de jours ouvrés du mois de Janvier 2020</dt>
+<dd>
+<p>Utiliser le code précédent</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aller_plus_loin"><a class="anchor" href="#_aller_plus_loin"></a>3. Aller plus loin</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Afficher la date du jour dans la sortie standard</dt>
+<dd>
+<p>Utiliser la classe <code>TimeFormatter</code>.
+La chaîne de caractères doit être de la forme suivante:
+<code>1 août 2019</code>.</p>
+</dd>
+<dt class="hdlist1">Compter le nombre de jours ouvrés entre le 1er janvier 2020 et le 1er juin 2020</dt>
+<dd>
+<p>Utiliser la classe <code>TemporalAdjusters</code></p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-11-18 12:41:09 UTC
+</div>
+</div>
+</body>
+</html>

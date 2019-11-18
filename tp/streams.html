@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Nicolas Frankel">
+<title>Travaux pratiques - Streams</title>
+<link rel="stylesheet" href="./../asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>Travaux pratiques - Streams</h1>
+<div class="details">
+<span id="author" class="author">Nicolas Frankel</span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image left"><a class="image" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Licence Creative Commons"></a></span></p>
+</div>
+<div class="paragraph">
+<p>Ce document est mis à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table des matières</div>
+<ul class="sectlevel1">
+<li><a href="#_références">1. Références</a></li>
+<li><a href="#_lambdas">2. Lambdas</a>
+<ul class="sectlevel2">
+<li><a href="#_reconnaissance_d_interfaces_fonctionnelles">2.1. Reconnaissance d&#8217;interfaces fonctionnelles</a></li>
+<li><a href="#_equivalence_interface_fonctionnelle_lambda">2.2. Equivalence interface fonctionnelle lambda</a></li>
+<li><a href="#_equivalence_lambda_interface_fonctionnelle">2.3. Equivalence lambda interface fonctionnelle</a></li>
+</ul>
+</li>
+<li><a href="#_streams">3. Streams</a>
+<ul class="sectlevel2">
+<li><a href="#_opération_sur_les_streams">3.1. Opération sur les streams</a></li>
+<li><a href="#_opérations_sur_les_collections">3.2. Opérations sur les collections</a></li>
+<li><a href="#_divers">3.3. Divers</a></li>
+</ul>
+</li>
+<li><a href="#_exercices_supplémentaires">4. Exercices supplémentaires</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_références"><a class="anchor" href="#_références"></a>1. Références</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">En français : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../cours/streams.html">Slides</a></p>
+</li>
+<li>
+<p><a href="https://www.jmdoudoux.fr/java/dej/chap-lambdas.htm" target="_blank" rel="noopener">Les expressions lambda</a></p>
+</li>
+<li>
+<p><a href="http://blog.ippon.fr/2014/03/17/api-stream-une-nouvelle-facon-de-gerer-les-collections-en-java-8/" target="_blank" rel="noopener">JAPI Stream - Une nouvelle façon de gérer les Collections en Java 8</a></p>
+</li>
+<li>
+<p><a href="https://www.slideshare.net/jpaumard/java-8streamscollectorspatterns" target="_blank" rel="noopener">Java 8, Streams et collectors</a></p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">En anglais : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html" target="_blank" rel="noopener">Processing Data with Java SE 8 Streams</a></p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/javase/tutorial/collections/streams/index.html" target="_blank" rel="noopener">Lesson: Aggregate Operations</a></p>
+</li>
+<li>
+<p><a href="http://www.baeldung.com/java-8-streams" target="_blank" rel="noopener">The Java 8 Stream API Tutorial</a></p>
+</li>
+<li>
+<p><a href="http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/" target="_blank" rel="noopener">Java 8 Stream Tutorial</a></p>
+</li>
+<li>
+<p><a href="https://zeroturnaround.com/rebellabs/java-8-streams-cheat-sheet/" target="_blank" rel="noopener">Java Streams cheat sheet</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lambdas"><a class="anchor" href="#_lambdas"></a>2. Lambdas</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_reconnaissance_d_interfaces_fonctionnelles"><a class="anchor" href="#_reconnaissance_d_interfaces_fonctionnelles"></a>2.1. Reconnaissance d&#8217;interfaces fonctionnelles</h3>
+<div class="paragraph">
+<p>Pour chaque interface suivante, déterminer s&#8217;il s&#8217;agit d&#8217;une interface fonctionnelle - qui peut être utilisée comme lambda et justifier votre réponse.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo { } <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo { <i class="conum" data-value="2"></i><b>(2)</b>
+    void foo();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo { <i class="conum" data-value="3"></i><b>(3)</b>
+    int foo();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo { <i class="conum" data-value="4"></i><b>(4)</b>
+    int foo(int someInt);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">interface Foo { <i class="conum" data-value="5"></i><b>(5)</b>
+    void foo();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+interface Foo { <i class="conum" data-value="6"></i><b>(6)</b>
+    void foo();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Foo { <i class="conum" data-value="7"></i><b>(7)</b>
+
+    default public int bar(int someInt) {
+        return 2 * someInt;
+    }
+
+    int foo(int someInt);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo { }
+
+public interface Bar extends Foo { <i class="conum" data-value="8"></i><b>(8)</b>
+    void bar();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Foo {
+    void foo();
+}
+
+public interface Bar extends Foo { <i class="conum" data-value="9"></i><b>(9)</b>
+    void bar();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_equivalence_interface_fonctionnelle_lambda"><a class="anchor" href="#_equivalence_interface_fonctionnelle_lambda"></a>2.2. Equivalence interface fonctionnelle lambda</h3>
+<div class="paragraph">
+<p>Pour chacune des interfaces fonctionnelles suivantes, déterminer la lambda équivalente <strong>sans l&#8217;aide d&#8217;un AGL</strong>.
+Puis vérifier votre réponse à l&#8217;aide de celui-ci.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Supplier&lt;T&gt; {
+    T get();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Consumer&lt;T&gt; {
+    void accept(T t);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Function&lt;T, R&gt; {
+    R apply(T t);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface BiFunction&lt;T, U, R&gt; {
+    R apply(T t, U u);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface ObjLongConsumer&lt;T&gt; {
+    void accept(T t, long value);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface IntUnaryOperator {
+    int applyAsInt(int operand);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface TemporalQuery&lt;R&gt; {
+    R queryFrom(TemporalAccessor temporal);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Callback&lt;P,R&gt; {
+    R call(P param);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface BuilderFactory {
+    Builder&lt;?&gt; getBuilder(Class&lt;?&gt; type);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface ChangeListener&lt;T&gt; {
+    void changed(ObservableValue&lt;? extends T&gt; observable, T oldValue, T newValue);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Recognizer {
+    boolean recognize(int c);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@FunctionalInterface
+public interface Interpolatable&lt;T&gt; {
+    public T interpolate(T endValue, double t);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_equivalence_lambda_interface_fonctionnelle"><a class="anchor" href="#_equivalence_lambda_interface_fonctionnelle"></a>2.3. Equivalence lambda interface fonctionnelle</h3>
+<div class="paragraph">
+<p>Pour chacune des lambdas suivantes, proposer une interface fonctionnelle du JDK équivalente.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">() -&gt; "Hello world"; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">s -&gt; s; <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">(String s1, String s2) -&gt; s1.compareToIgnoreCase(s2); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">f -&gt; "Hello".equals(f); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">() -&gt; System.out.println("Hello world"); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">o -&gt; o.hashCode(); <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Rechercher dans les <em>packages</em> <code>java.util</code> et <code>java.util.function</code></p>
+</li>
+<li>
+<p>Rechercher dans les interfaces annotés avec <code>@FunctionalInterface</code></p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_streams"><a class="anchor" href="#_streams"></a>3. Streams</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Soit la classe suivante :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Person {
+
+    private final long id;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate birthDate;
+
+    public Person(long id, String firstName, String lastName, LocalDate birthDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
+    // Getters for fields
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_opération_sur_les_streams"><a class="anchor" href="#_opération_sur_les_streams"></a>3.1. Opération sur les streams</h3>
+<div class="paragraph">
+<p>A partir d&#8217;une instance de <code>Stream&lt;Person&gt;</code>, retourner une <em>stream</em> qui répond aux contraintes suivantes :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Seules les personnes dont le nom de famille est "Doe"</p>
+</li>
+<li>
+<p>Seules les personnes dont l&#8217;age est supérieur à 18 à la date du jour</p>
+</li>
+<li>
+<p>Seules les personnes dont le nom de famille est le même que le prénom</p>
+</li>
+<li>
+<p>Seuls les noms de famille, en majuscules, sans doublons</p>
+</li>
+<li>
+<p>Toutes les personnes, ordonnées par date de naissance croissante</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_opérations_sur_les_collections"><a class="anchor" href="#_opérations_sur_les_collections"></a>3.2. Opérations sur les collections</h3>
+<div class="paragraph">
+<p>Implémenter les méthodes suivantes suivantes en utilisant uniquement les <em>streams</em>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;Person&gt; onlyAdults(List&lt;Person&gt; persons) { }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">double averageAge(List&lt;Person&gt; persons) { }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">String lastNamesSeparatedWithSpace(List&lt;Person&gt; persons) { }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, List&lt;Person&gt;&gt; groupByFirstName(List&lt;Person&gt; persons) { }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_divers"><a class="anchor" href="#_divers"></a>3.3. Divers</h3>
+<div class="paragraph">
+<p>A l&#8217;aide de <em>streams</em> :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Calculer la factorielle de 10</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>n! = n x (n - 1) pour n &gt; 0</p>
+</li>
+<li>
+<p>0! = 1</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Calculer la suite de Fibonacci pour n = 5</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Fib<sub>n</sub> = Fib<sub>n-1</sub> + Fib<sub>n-2</sub> pour n &gt; 2</p>
+</li>
+<li>
+<p>Fib<sub>1</sub> = 1</p>
+</li>
+<li>
+<p>Fib<sub>2</sub> = 1,</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercices_supplémentaires"><a class="anchor" href="#_exercices_supplémentaires"></a>4. Exercices supplémentaires</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><a href="https://github.com/sodant/java8workshop/tree/master/JFall%20Hands-On/java8-hands-on-jfall-2014" target="_blank" rel="noopener">Lab Xebia à JFall 2014</a></dt>
+<dd>
+<p>Réaliser les exercices du dossier <code>./java8workshop/JFall Hands-On/java8-hands-on-jfall-2014/exercises</code> en suivant les instructions données sur Github.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-11-18 12:41:09 UTC
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Nicolas Frankel">
+<title>Travaux pratiques - Génériques</title>
+<link rel="stylesheet" href="./../asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>Travaux pratiques - Génériques</h1>
+<div class="details">
+<span id="author" class="author">Nicolas Frankel</span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image left"><a class="image" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Licence Creative Commons"></a></span></p>
+</div>
+<div class="paragraph">
+<p>Ce document est mis à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table des matières</div>
+<ul class="sectlevel1">
+<li><a href="#_références">1. Références</a></li>
+<li><a href="#_compréhension">2. Compréhension</a></li>
+<li><a href="#_conception">3. Conception</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_références"><a class="anchor" href="#_références"></a>1. Références</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">En anglais : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/javase/tutorial/java/generics/index.html" target="_blank" rel="noopener">Lesson: Generics</a></p>
+</li>
+<li>
+<p><a href="http://www.angelikalanger.com/GenericsFAQ/JavaGenericsFAQ.html#TOC" target="_blank" rel="noopener">Java Generics FAQs - Frequently Asked Questions</a></p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">En français : </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://openclassrooms.com/courses/apprenez-a-programmer-en-java/la-genericite-en-java" target="_blank" rel="noopener">La généricité en Java</a></p>
+</li>
+<li>
+<p><a href="https://www.jmdoudoux.fr/java/dej/chap-jdk1.5.htm#jdk1.5-6" target="_blank" rel="noopener">Les generics</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_compréhension"><a class="anchor" href="#_compréhension"></a>2. Compréhension</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dans cette section, pour chaque question, la procédure est de :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Déterminer si le code compile</p>
+</li>
+<li>
+<p>Vérifier dans l&#8217;AGL</p>
+</li>
+<li>
+<p>Indiquer la raison pour laquelle le code compile (ou pas)</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">ArrayList&lt;Integer&gt; integers = new ArrayList&lt;Integer&gt;(); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;Integer&gt; integers = new ArrayList&lt;&gt;(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? extends Integer&gt; integers = new ArrayList&lt;&gt;(); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? extends Integer&gt; integers = new ArrayList&lt;?&gt;(); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? extends Integer&gt; integers = new ArrayList&lt;&gt;(); <i class="conum" data-value="5"></i><b>(5)</b>
+integers.add(1);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? extends Integer&gt; integers = Arrays.asList(1, 2, 3); <i class="conum" data-value="6"></i><b>(6)</b>
+integers.get(1);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? super Integer&gt; numbers = new ArrayList&lt;&gt;(); <i class="conum" data-value="7"></i><b>(7)</b>
+numbers.add(1);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">List&lt;? super Integer&gt; numbers = Arrays.asList(1, 2, 3); <i class="conum" data-value="8"></i><b>(8)</b>
+numbers.get(1);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; {} <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="10"></i><b>(10)</b>
+
+    public Generic(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="11"></i><b>(11)</b>
+
+    public Generic(T t) {}
+
+    public static void main(String... args) {
+        Generic g = new Generic(new Object());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="12"></i><b>(12)</b>
+
+    public Generic(T t) {}
+
+    public static void main(String... args) {
+        Generic g = new Generic&lt;&gt;(new Object());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="13"></i><b>(13)</b>
+
+    public Generic(T t) {}
+
+    public static void main(String... args) {
+        Generic&lt;?&gt; g = new Generic&lt;&gt;(new Object());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="14"></i><b>(14)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;?&gt; g = new Generic&lt;&gt;(new Object());
+        ? t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="15"></i><b>(15)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;?&gt; g = new Generic&lt;&gt;(new Object());
+        Object t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="16"></i><b>(16)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;Object&gt; g = new Generic&lt;&gt;(new Object());
+        Object t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="17"></i><b>(17)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;? extends Number&gt; g = new Generic&lt;&gt;(1);
+        Object t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="18"></i><b>(18)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;? extends Number&gt; g = new Generic&lt;&gt;(1);
+        Number t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="19"></i><b>(19)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;? extends Number&gt; g = new Generic&lt;&gt;(1);
+        Integer t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="20"></i><b>(20)</b>
+
+    private final T t;
+
+    public Generic(T t) {
+        this.t = t;
+    }
+
+    public static void main(String... args) {
+        Generic&lt;? super Number&gt; g = new Generic&lt;&gt;(1);
+        Number t = g.t;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="21"></i><b>(21)</b>
+
+    private T t;
+
+    public static void main(String... args) {
+        Generic&lt;? super Number&gt; g = new Generic&lt;&gt;();
+        g.t = 1;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="22"></i><b>(22)</b>
+
+    public static class GenericChild&lt;T&gt; extends Generic&lt;T&gt; {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="23"></i><b>(23)</b>
+
+    public static class GenericChild extends Generic&lt;Number&gt; {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class Generic&lt;T&gt; { <i class="conum" data-value="24"></i><b>(24)</b>
+
+    public static class GenericChild&lt;V&gt; extends Generic&lt;Number&gt; {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="25"></i><b>(25)</b>
+
+    public void apply(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="26"></i><b>(26)</b>
+
+    public &lt;T&gt; void apply(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="27"></i><b>(27)</b>
+
+    public &lt;V extends T&gt; void apply(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="28"></i><b>(28)</b>
+
+    public &lt;T extends V&gt; void apply(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="29"></i><b>(29)</b>
+
+    public &lt;T extends Number&gt; void apply(T t) {}
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="30"></i><b>(30)</b>
+
+    public &lt;T&gt; R apply(T t) {
+        return (R) new Object();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="31"></i><b>(31)</b>
+
+    public &lt;T, R&gt; R apply(T t) {
+        return (R) new Object();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="32"></i><b>(32)</b>
+
+    public &lt;T, R extends Number&gt; R apply(T t) {
+        return (R) new Object();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="33"></i><b>(33)</b>
+
+    public &lt;T, R super Number&gt; R apply(T t) {
+        return (R) new Object();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class NotGeneric { <i class="conum" data-value="34"></i><b>(34)</b>
+
+    public &lt;T, R extends Number&gt; R apply(T t) {
+        return (R) Integer.valueOf(1);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">public class LastButNotLeast&lt;T,V&gt; { <i class="conum" data-value="35"></i><b>(35)</b>
+
+    public void apply&lt;T&gt;() {}
+    public void apply&lt;V&gt;() {}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conception"><a class="anchor" href="#_conception"></a>3. Conception</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>En utilisant les génériques, développer une méthode unique qui permet d&#8217;additionner deux nombres de n&#8217;importe quel type primitif (<code>byte</code>, <code>int</code>, <code>long</code>, <code>float</code> et <code>double</code>) et qui retourne un <code>double</code>.</p>
+</li>
+<li>
+<p>Soit le diagramme de classes suivant :</p>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="./images/generics/triple.svg" alt="triple">
+</div>
+</div>
+<div class="paragraph">
+<p>Modifier la conception pour faire en sorte qu&#8217;il soit possible de récupérer l&#8217;object stocké sans qu&#8217;il soit nécessaire de transtyper.
+Par exemple :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Triple triple = new Triple("Hello", new Date(), 15);
+String s = triple.first();
+Date d = triple.second();
+Integer i = triple.third();</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Soit le diagramme de classes suivant :</p>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="./images/generics/appendable.svg" alt="appendable">
+</div>
+</div>
+<div class="paragraph">
+<p>Améliorer la conception pour :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Qu&#8217;il soit possible de compiler <code>MyString.append(MyString myString)</code> et <code>MyList.append(MyList myList)</code></p>
+</li>
+<li>
+<p>Qu&#8217;il ne soit pas possible de compiler <code>MyString.append(MyList myList)</code> et <code>MyList.append(MyString myString)</code></p>
+<div class="paragraph">
+<p>Implémenter le code et vérifier</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2019-11-18 12:41:09 UTC
+</div>
+</div>
+</body>
+</html>
