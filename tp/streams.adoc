@@ -301,5 +301,5 @@ A l'aide de _streams_ :
 
 == Exercices supplémentaires
 
-https://github.com/xebia/java8-hands-on-jfall-2014[Lab Xebia à JFall 2014^]::
+https://github.com/sodant/java8workshop/tree/master/JFall%20Hands-On/java8-hands-on-jfall-2014[Lab Xebia à JFall 2014^]::
 Les instructions sont données sur Github.
